@@ -11,7 +11,7 @@ export default function Home() {
     // const [openModal, setOpenModal] = useState(false);
 
     return (
-        <main className="">
+        <main className="main">
             <p>Hello WTF</p>
             <p>Hello WTF2</p>
             <p>Hello WTF3</p>
