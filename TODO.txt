@@ -1,0 +1,41 @@
+// Themes
+// Slate MD and rich text input and view component
+    > Test value for storage (useState) - JSON serialization/deserialization
+    > Atomic UI components (incorporate design)
+
+// postgres schema
+//    ER - Entities
+//        attributes
+//        identity
+
+
+
+-------------------------------------------
+
+Phase 2:
+
+Routes:
+
+Unprotected: ["search results", "Home", "LogIn", "Register"]
+ Home links to two other routes:
+    1. Latest templates (title description image author)
+    2. Popular templates (table format)
+
+Protected: {"Dashboard", "home" + (2 more), "search results"}
+
+Dashboard->
+        if regular:
+            my forms
+            my responses
+        if admin:
+            all users
+            my forms
+            my responses
+
+----------------------
+Finalize the routes
+Implement middleware
+Add darkmode
+    see theme toggler.js
+search modal in navbar
+Rest of backend
