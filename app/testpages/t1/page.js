@@ -12,14 +12,5 @@ import React, { useState } from "react";
 export default function Home() {
     const [openModal, setOpenModal] = useState(false);
 
-    return (
-        <main className="main">
-            <ImageUpload openModal={openModal} setOpenModal={setOpenModal} />
-            <div>
-                <button type="button" onClick={() => setOpenModal(true)}>
-                    Image upload
-                </button>
-            </div>
-        </main>
-    );
+    return <main className="main"></main>;
 }

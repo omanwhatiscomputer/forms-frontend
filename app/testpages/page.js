@@ -1,20 +1,17 @@
 /* eslint-disable react/react-in-jsx-scope */
 "use client";
 
-import React, { useState } from "react";
-import FormHeader from "../(components)/formComponents/FormHeader";
-import FormBlock from "../(components)/formComponents/FormBlock";
-import BlockHeader from "../(components)/formComponents/BlockComponents/BlockHeader";
-import BlockBody from "../(components)/formComponents/BlockComponents/BlockBody";
-import FormMenu from "../(components)/formComponents/FormMenu";
-
-// import RichTextInput from "@/app/(components)/RichTextInput";
-// import MarkdownInput from "@/app/(components)/MarkdownInput";
+// import React, { useState } from "react";
+// import FormHeader from "../(components)/formComponents/FormHeader";
+// import FormBlock from "../(components)/formComponents/FormBlock";
+// import BlockHeader from "../(components)/formComponents/BlockComponents/BlockHeader";
+// import BlockBody from "../(components)/formComponents/BlockComponents/BlockBody";
+// import FormMenu from "../(components)/formComponents/FormMenu";
 
 export default function TestPage() {
     return (
         <main className="main">
-            <FormMenu />
+            {/* <FormMenu />
             <div className="w-full px-5 sm:px-10 md:px-36 lg:px-64 xl:px-96">
                 <FormBlock className={"mt-2"}>
                     <FormHeader />
@@ -23,7 +20,7 @@ export default function TestPage() {
                     <BlockHeader />
                     <BlockBody />
                 </FormBlock>
-            </div>
+            </div> */}
         </main>
     );
 }
