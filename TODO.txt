@@ -33,9 +33,56 @@ Dashboard->
             my responses
 
 ----------------------
-Finalize the routes
+
+Dashboard - Parallel routes? secondary nav menu? watch vid in parallel routes!
+
+Frontend: everything except dashboard
 Implement middleware
-Add darkmode
-    see theme toggler.js
-search modal in navbar
 Rest of backend
+
+
+____________________________________
+CreateForm Top bar:
+
+LeftSide:
+    Title
+
+RightSide: 
+    Access control, 
+    Form Topic, 
+    BannerURL
+
+____________________________________
+
+Block ContextMenu:
+
+    Top: InputType(Block)
+         isRequired
+
+    INside
+        Add Question Field ()
+        Add checkbox option
+        {if checkbox==true}
+            Delete Question Field
+            Delete checkbox option
+
+    Delete Block
+    Add New Question
+    Duplicate
+
+    
+    {if checkbox}
+        Single Answer || Multiple Answers
+    
+
+
+for multiple choice only save answers inside content. when rendering, use the content arrray to get answers
+
+Definitely use this::
+    FramerMotionDragAndDrop
+
+Not sure If I'll use this
+    UseForm
+    UseField
+
+CheckBoxOption : "{id:uuid, content: string, includesImage: bool, imgsrc: url}"

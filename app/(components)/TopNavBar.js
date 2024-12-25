@@ -1,43 +1,75 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import logo_light from "@/public/logo-light.png";
 import logo_dark from "@/public/logo-dark.png";
 
 import { usePathname } from "next/navigation";
-import { IoLibrary } from "react-icons/io5";
+
+// import { IoIosOutlet } from "react-icons/io";
 
 import { useTheme } from "next-themes";
 
-import NavBarToggler from "./NavBarToggler";
+import NavBarToggler from "./navBarComponents/NavBarToggler";
 import Link from "next/link";
-import { ThemeToggler } from "../ThemeToggler";
-import SearchModalToggler from "./SearchModalToggler";
-import LocaleInput from "./LocaleInput";
-import SearchModal from "./SearchModal";
+import { ThemeToggler } from "./navBarComponents/ThemeToggler";
+import SearchModalToggler from "./navBarComponents/SearchModalToggler";
+import LocaleInput from "./navBarComponents/LocaleInput";
+import SearchModal from "./navBarComponents/SearchModal";
+import { handleClientLogout } from "../utils/client.api.utils";
+import { useRouter } from "next/navigation";
+
+import { useSelector, useDispatch } from "react-redux";
+import { checkAuthStatus, signOut } from "@/lib/features/general/authSlice";
+
+// const getLocalStorageItem = (key) => {
+//     if (typeof localStorage === "undefined") {
+//         return null;
+//     }
+//     return localStorage.getItem(key);
+// };
 
 const TopNavBar = () => {
-    // eslint-disable-next-line no-unused-vars
-    const { theme, _ } = useTheme();
-    const isSignedIn = true;
+    const dispatch = useDispatch();
+    const authProps = useSelector((state) => state.auth);
+
+    const router = useRouter();
+    const { theme } = useTheme();
     const pathname = usePathname();
 
     const [isToggled, setIsToggled] = useState(false);
     const [searchIsToggled, setSearchIsToggled] = useState(false);
+    const [currentTheme, setCurrentTheme] = useState(null);
+
+    useEffect(() => {
+        setCurrentTheme(localStorage.getItem("theme") || theme);
+    }, []);
+
+    useEffect(() => {
+        const checkAuth = async () => {
+            dispatch(checkAuthStatus());
+        };
+        checkAuth();
+    }, []);
 
     // eslint-disable-next-line no-unused-vars
-    const display = !isSignedIn ? "hidden" : "";
+    const display = !authProps.isSignedIn ? "hidden" : "";
 
     const navItemStyle =
         "py-1 mx-4 md:mx-0 md:py-0 pl-[20px] md:px-[10px] mb-[1px] md:mb-0 rounded-md md:h-full md:rounded-none hover:bg-red-900 hover:text-white md:hover:bg-inherit md:hover:text-red-900";
+
+    useEffect(() => {
+        setIsToggled(false);
+        setSearchIsToggled(false);
+    }, [pathname]);
 
     return (
         <>
             {isToggled && (
                 <div
                     onClick={() => setIsToggled(false)}
-                    className="z-10 absolute left-0 top-0 w-screen h-screen overflow-hidden bg-background opacity-50 md:hidden"
+                    className="z-10 absolute left-0 top-0 w-screen h-screen overflow-hidden bg-background opacity-85 md:hidden"
                 />
             )}
             {searchIsToggled && (
@@ -51,9 +83,11 @@ const TopNavBar = () => {
                         setSearchIsToggled={setSearchIsToggled}
                     />
                     <Link className="flex" href="/">
-                        <IoLibrary className="text-primary mr-1 text-xl" />
+                        {/* <IoIosOutlet className="text-primary mr-1 text-xl" /> */}
                         <Image
-                            src={theme === "dark" ? logo_dark : logo_light}
+                            src={
+                                currentTheme === "dark" ? logo_dark : logo_light
+                            }
                             width={500}
                             height={200}
                             alt="App logo"
@@ -67,14 +101,14 @@ const TopNavBar = () => {
                         setSearchIsToggled={setSearchIsToggled}
                         setNavbarIsToggled={setIsToggled}
                     />
-                    <ThemeToggler />
+                    <ThemeToggler setCurrentTheme={setCurrentTheme} />
                     <LocaleInput />
                     <div
                         className={`absolute w-full top-[36px] py-2 md:py-0 left-0 border-b-[1px] md:border-b-0 md:top-auto md:left-auto md:relative md:w-auto md:flex md:flex-row ${
                             isToggled ? "" : "hidden"
-                        } bg-background`}
+                        } bg-background transition-all`}
                     >
-                        {!isSignedIn ? (
+                        {!authProps.isSignedIn ? (
                             <ul className="list-none flex flex-col md:flex-row m-0 p-0">
                                 <Link
                                     href="/"
@@ -118,7 +152,11 @@ const TopNavBar = () => {
                                         pathname === "/register" &&
                                         "text-primary"
                                     }`}
-                                    onClick={console.log("clicked")}
+                                    onClick={() => {
+                                        handleClientLogout(theme);
+                                        dispatch(signOut());
+                                        router.push("/");
+                                    }}
                                 >
                                     Logout
                                 </div>

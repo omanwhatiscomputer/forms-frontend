@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/react-in-jsx-scope */
 "use client";
 
 /**
@@ -12,23 +14,42 @@
             </div>)
  */
 
-import { Button, Modal, Select } from "flowbite-react";
+import { Button, Modal } from "flowbite-react";
 import { FileUploader } from "react-drag-drop-files";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { upload } from "@vercel/blob/client";
+import { useDispatch } from "react-redux";
+import { questionType } from "@/constants/questionType";
 
-const ImageUpload = ({ setOpenModal, openModal }) => {
+const ImageUpload = ({
+    setOpenModal,
+    openModal,
+    title,
+    action,
+    blockId,
+    questionId,
+}) => {
     const [file, setFile] = useState(null);
+    const dispatch = useDispatch();
+
     const handleChange = async (file) => {
         setFile(file);
 
-        const url = await upload(file.name, file, {
+        const urlObject = await upload(file.name, file, {
             access: "public",
             handleUploadUrl: "/api/uploads",
         });
-        console.log(url);
 
-        // save url to db
+        dispatch(
+            action({
+                qId: questionId,
+                url: urlObject.url,
+                qtype: questionType.image,
+                id: blockId,
+            })
+        );
+        setOpenModal(false);
+        // console.log(urlObject);
     };
 
     return (
@@ -38,10 +59,11 @@ const ImageUpload = ({ setOpenModal, openModal }) => {
                 size="md"
                 onClose={() => setOpenModal(false)}
             >
-                <Modal.Header>Small modal</Modal.Header>
+                <Modal.Header>{title}</Modal.Header>
                 <Modal.Body>
                     <div className="space-y-6 p-6">
                         <FileUploader
+                            className="border-primary"
                             handleChange={handleChange}
                             name="file"
                             types={["JPG", "PNG", "GIF"]}
@@ -50,11 +72,11 @@ const ImageUpload = ({ setOpenModal, openModal }) => {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => setOpenModal(false)}>
-                        I accept
-                    </Button>
+                    {/* <Button color="red" onClick={() => setOpenModal(false)}>
+                        Upload
+                    </Button> */}
                     <Button color="gray" onClick={() => setOpenModal(false)}>
-                        Decline
+                        Close
                     </Button>
                 </Modal.Footer>
             </Modal>

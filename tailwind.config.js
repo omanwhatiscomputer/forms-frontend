@@ -20,6 +20,9 @@ module.exports = {
     },
     plugins: [
         flowbite.plugin(),
+        require("@tailwindcss/forms")({
+            strategy: "className",
+        }),
         // plugin(function ({ addVariant }) {
         //     addVariant("neon", ".neon &"); // similar to light/dark in class names
         // }),                                  // usage neon:border-b

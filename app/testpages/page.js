@@ -1,30 +1,29 @@
+/* eslint-disable react/react-in-jsx-scope */
 "use client";
 
 import React, { useState } from "react";
+import FormHeader from "../(components)/formComponents/FormHeader";
+import FormBlock from "../(components)/formComponents/FormBlock";
+import BlockHeader from "../(components)/formComponents/BlockComponents/BlockHeader";
+import BlockBody from "../(components)/formComponents/BlockComponents/BlockBody";
+import FormMenu from "../(components)/formComponents/FormMenu";
 
-import ImageUpload from "@/app/(components)/ImageUpload";
-import { ThemeToggler } from "@/app/(components)/ThemeToggler";
-import RichTextInput from "@/app/(components)/RichTextInput";
-import MarkdownInput from "@/app/(components)/MarkdownInput";
+// import RichTextInput from "@/app/(components)/RichTextInput";
+// import MarkdownInput from "@/app/(components)/MarkdownInput";
 
-export default function Home() {
-    // const [openModal, setOpenModal] = useState(false);
-
+export default function TestPage() {
     return (
-        <div className="">
-            <p>Hello world</p>
-
-            {/* <RichTextInput /> */}
-
-            {/* <MarkdownInput /> */}
-
-            {/* <ThemeToggler />
-            <ImageUpload openModal={openModal} setOpenModal={setOpenModal} />
-            <div>
-                <button type="button" onClick={() => setOpenModal(true)}>
-                    Image upload
-                </button>
-            </div> */}
-        </div>
+        <main className="main">
+            <FormMenu />
+            <div className="w-full px-5 sm:px-10 md:px-36 lg:px-64 xl:px-96">
+                <FormBlock className={"mt-2"}>
+                    <FormHeader />
+                </FormBlock>
+                <FormBlock className={"mt-8"} displayMenu>
+                    <BlockHeader />
+                    <BlockBody />
+                </FormBlock>
+            </div>
+        </main>
     );
 }

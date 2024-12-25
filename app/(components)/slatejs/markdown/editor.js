@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from "react";
+import { css } from "@emotion/css";
 import {
     Editor,
     Element as SlateElement,
@@ -10,9 +11,19 @@ import {
 import { SHORTCUTS } from "./constants";
 
 export const withShortcuts = (editor) => {
-    const { deleteBackward, insertText } = editor;
+    const { deleteBackward, insertText, isInline } = editor;
+
+    editor.isInline = (element) => {
+        return element.type === "link"
+            ? true
+            : isInline
+            ? isInline(element)
+            : false;
+    };
+
     editor.insertText = (text) => {
         const { selection } = editor;
+
         if (text.endsWith(" ") && selection && Range.isCollapsed(selection)) {
             const { anchor } = selection;
             const block = Editor.above(editor, {
@@ -51,6 +62,58 @@ export const withShortcuts = (editor) => {
                 return;
             }
         }
+
+        if (text === ")" && selection && Range.isCollapsed(selection)) {
+            const { anchor } = selection;
+            const block = Editor.above(editor, {
+                match: (n) =>
+                    SlateElement.isElement(n) && Editor.isBlock(editor, n),
+            });
+
+            if (block) {
+                const [, path] = block;
+                const start = Editor.start(editor, path);
+                const range = { anchor, focus: start };
+                const beforeText = Editor.string(editor, range);
+
+                // Updated regex to be more precise
+                const match = beforeText.match(/\[([^\]]+)\]\(([^)]+)$/);
+
+                if (match) {
+                    const [fullMatch, linkText, linkUrl] = match;
+
+                    // Insert the closing parenthesis first
+                    insertText(text);
+
+                    // Calculate the entire range including the closing parenthesis
+                    const entireMatch = fullMatch + ")";
+
+                    // Delete the markdown syntax
+                    Transforms.delete(editor, {
+                        at: {
+                            anchor: {
+                                path: anchor.path,
+                                offset: anchor.offset + 1 - entireMatch.length,
+                            },
+                            focus: {
+                                path: anchor.path,
+                                offset: anchor.offset + 1,
+                            },
+                        },
+                    });
+
+                    // Insert the link node
+                    Transforms.insertNodes(editor, {
+                        type: "link",
+                        url: linkUrl.trim(),
+                        children: [{ text: linkText.trim() }],
+                    });
+
+                    return;
+                }
+            }
+        }
+
         insertText(text);
     };
     editor.deleteBackward = (...args) => {
@@ -92,6 +155,20 @@ export const withShortcuts = (editor) => {
 };
 export const Element = ({ attributes, children, element }) => {
     switch (element.type) {
+        case "link":
+            return (
+                <a
+                    {...attributes}
+                    href={element.url}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        window.open(element.url, "_blank");
+                    }}
+                    className="text-primary hover:text-sky-700 underline cursor-pointer"
+                >
+                    {children}
+                </a>
+            );
         case "block-quote":
             return <blockquote {...attributes}>{children}</blockquote>;
         case "bulleted-list":
@@ -113,4 +190,52 @@ export const Element = ({ attributes, children, element }) => {
         default:
             return <p {...attributes}>{children}</p>;
     }
+};
+
+export const Leaf = ({ attributes, children, leaf }) => {
+    return (
+        <span
+            {...attributes}
+            className={css`
+                font-weight: ${leaf.bold && "bold"};
+                font-style: ${leaf.italic && "italic"};
+                text-decoration: ${leaf.underlined && "underline"};
+                ${leaf.title &&
+                css`
+                    display: inline-block;
+                    font-weight: bold;
+                    font-size: 20px;
+                    margin: 20px 0 10px 0;
+                `}
+                ${leaf.list &&
+                css`
+                    padding-left: 10px;
+                    font-size: 20px;
+                    line-height: 10px;
+                `}
+          ${leaf.hr &&
+                css`
+                    display: block;
+                    text-align: center;
+                    border-bottom: 2px solid #ddd;
+                `}
+          ${leaf.blockquote &&
+                css`
+                    display: inline-block;
+                    border-left: 2px solid #ddd;
+                    padding-left: 10px;
+                    color: #aaa;
+                    font-style: italic;
+                `}
+          ${leaf.code &&
+                css`
+                    font-family: monospace;
+                    background-color: #eee;
+                    padding: 3px;
+                `}
+            `}
+        >
+            {children}
+        </span>
+    );
 };
