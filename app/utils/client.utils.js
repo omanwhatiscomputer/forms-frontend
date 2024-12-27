@@ -23,6 +23,7 @@ function fillProperty(obj, propName, value) {
         if (Object.prototype.hasOwnProperty.call(obj, key)) {
             if (key === propName) {
                 obj[key] = value;
+                obj["Id"] = uuidv4();
             } else if (
                 typeof obj[key] === "object" &&
                 obj[key] !== null &&

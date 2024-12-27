@@ -8,9 +8,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 /* eslint-disable react/react-in-jsx-scope */
-const BlockInputType = ({ name, blockId }) => {
+const BlockInputType = ({ name, blockId, formId }) => {
+    // console.log(formId, blockId);
     const blockInputType = useSelector((state) =>
-        selectBlockInputTypeByBlockId(state, blockId)
+        selectBlockInputTypeByBlockId(state, formId, blockId)
     );
     const dispatch = useDispatch();
 
@@ -20,7 +21,8 @@ const BlockInputType = ({ name, blockId }) => {
             onChange={(e) =>
                 dispatch(
                     updateBlockInputTypeByBlockId({
-                        id: blockId,
+                        id: formId,
+                        bId: blockId,
                         value: e.target.value,
                     })
                 )

@@ -19,6 +19,7 @@ const CheckboxField = ({
     includesImage = false,
     imageUrl,
     action,
+    formId,
 }) => {
     return (
         <div className="my-2">
@@ -30,6 +31,8 @@ const CheckboxField = ({
                         className="translate-y-[8px]"
                     />
                     <BlockTextInput
+                        name={checkboxId + "-checkbox"}
+                        formId={formId}
                         blockId={blockId}
                         checkboxId={checkboxId}
                         action={action}
@@ -49,6 +52,7 @@ const CheckboxField = ({
                         {includesImage ? <LuImageOff /> : <FiImage />}
                     </FormButton> */}
                     <CheckboxFieldImageToggleButton
+                        formId={formId}
                         blockId={blockId}
                         checkboxId={checkboxId}
                         type="button"
@@ -59,6 +63,7 @@ const CheckboxField = ({
                         title="Upload Image"
                     />
                     <FormButton
+                        formId={formId}
                         type={"button"}
                         blockId={blockId}
                         checkboxId={checkboxId}

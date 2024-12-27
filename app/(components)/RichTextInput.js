@@ -28,6 +28,7 @@ const RichTextInput = ({
     value,
     blockId,
     questionId,
+    formId,
 }) => {
     const dispatch = useDispatch();
     const renderElement = useCallback((props) => <Element {...props} />, []);
@@ -44,13 +45,20 @@ const RichTextInput = ({
     const editorStyle = `px-4 py-2 focus:ring-0 focus:outline-none ${className}`;
 
     return (
-        <div className="flex flex-col-reverse">
+        <div className="flex flex-col-reverse" id={questionId || blockId}>
             <Slate
                 editor={editor}
                 initialValue={richtextDefault}
                 value={value}
                 onChange={(v) =>
-                    dispatch(action({ id: blockId, qId: questionId, value: v }))
+                    dispatch(
+                        action({
+                            id: formId,
+                            bId: blockId,
+                            qId: questionId,
+                            value: v,
+                        })
+                    )
                 }
             >
                 <Toolbar

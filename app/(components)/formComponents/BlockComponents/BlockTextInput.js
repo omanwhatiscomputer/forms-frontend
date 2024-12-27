@@ -13,6 +13,7 @@ const BlockTextInput = ({
     action,
     blockId,
     checkboxId,
+    formId,
 }) => {
     const dispatch = useDispatch();
     return (
@@ -21,8 +22,9 @@ const BlockTextInput = ({
             onChange={(e) =>
                 dispatch(
                     action({
-                        id: blockId,
-                        cbId: blockId,
+                        id: formId,
+                        bId: blockId,
+                        cbId: checkboxId,
                         value: e.target.value,
                     })
                 )

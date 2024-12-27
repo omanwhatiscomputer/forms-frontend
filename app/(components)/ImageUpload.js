@@ -28,6 +28,7 @@ const ImageUpload = ({
     action,
     blockId,
     questionId,
+    formId,
 }) => {
     const [file, setFile] = useState(null);
     const dispatch = useDispatch();
@@ -45,7 +46,8 @@ const ImageUpload = ({
                 qId: questionId,
                 url: urlObject.url,
                 qtype: questionType.image,
-                id: blockId,
+                bId: blockId,
+                id: formId,
             })
         );
         setOpenModal(false);

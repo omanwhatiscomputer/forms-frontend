@@ -16,6 +16,7 @@ const FormButton = ({
     questionId,
     checkboxId,
     action,
+    formId,
 }) => {
     const dispatch = useDispatch();
     const [openModal, setOpenModal] = useState(false);
@@ -29,6 +30,7 @@ const FormButton = ({
                     setOpenModal={setOpenModal}
                     title={title}
                     action={action}
+                    formId={formId}
                 />
             )}
             <button
@@ -40,9 +42,10 @@ const FormButton = ({
                           onClick: () =>
                               dispatch(
                                   action({
+                                      id: formId,
                                       qId: questionId,
                                       qtype: questionType.text,
-                                      id: blockId,
+                                      bId: blockId,
                                       cbId: checkboxId,
                                   })
                               ),

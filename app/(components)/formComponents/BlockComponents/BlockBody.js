@@ -1,4 +1,6 @@
+"use client";
 /* eslint-disable react/prop-types */
+
 import SectionDivider from "../../common/SectionDivider";
 
 import { RxText } from "react-icons/rx";
@@ -16,17 +18,20 @@ import {
     selectQuestionGroupByBlockId,
     updateCheckboxFieldTextInputByBlockIdCheckboxFieldId,
 } from "@/lib/features/form/formSlice";
+import { useParams } from "next/navigation";
 
 /* eslint-disable react/react-in-jsx-scope */
 const BlockBody = ({ blockId }) => {
+    const { id } = useParams();
+
     const blockInputType = useSelector((state) =>
-        selectBlockInputTypeByBlockId(state, blockId)
+        selectBlockInputTypeByBlockId(state, id, blockId)
     );
     const blockQuestionGroup = useSelector((state) =>
-        selectQuestionGroupByBlockId(state, blockId)
+        selectQuestionGroupByBlockId(state, id, blockId)
     );
     const blockCheckboxOptions = useSelector((state) =>
-        selectCheckboxOptionsByBlockId(state, blockId)
+        selectCheckboxOptionsByBlockId(state, id, blockId)
     );
     return (
         <div className="pt-4">
@@ -37,6 +42,7 @@ const BlockBody = ({ blockId }) => {
                         ADD:
                     </p>
                     <FormButton
+                        formId={id}
                         action={addNewQuestionFieldByBlockId}
                         blockId={blockId}
                         type={"button"}
@@ -45,6 +51,7 @@ const BlockBody = ({ blockId }) => {
                         <RxText />
                     </FormButton>
                     <FormButton
+                        formId={id}
                         action={addNewQuestionFieldByBlockId}
                         forImageUpload={true}
                         type={"button"}
@@ -59,6 +66,7 @@ const BlockBody = ({ blockId }) => {
                 <div className="pt-4 mb-8">
                     {blockQuestionGroup.map((bqg) => (
                         <QuestionField
+                            formId={id}
                             key={bqg.Id}
                             type={bqg.Type}
                             questionId={bqg.Id}
@@ -77,6 +85,7 @@ const BlockBody = ({ blockId }) => {
                     <SectionDivider content={"Multiple Choice Options"} />
                     <div className="flex justify-end" key={`${blockId}-0`}>
                         <FormButton
+                            formId={id}
                             blockId={blockId}
                             action={addNewCheckboxOptionByBlockId}
                             type={"button"}
@@ -88,7 +97,8 @@ const BlockBody = ({ blockId }) => {
                     <div key={`${blockId}-1`}>
                         {blockCheckboxOptions.map((co) => (
                             <CheckboxField
-                                key={co.Id}
+                                formId={id}
+                                key={co.Id + blockId}
                                 includesImage={co.IncludesImage}
                                 content={co.content}
                                 imageUrl={co.ImageUrl}

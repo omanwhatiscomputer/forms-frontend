@@ -18,7 +18,7 @@ import CustomPlaceholder from "./slatejs/CustomPlaceholder";
 import { useDispatch } from "react-redux";
 import { markdownDefault } from "@/constants/defaultValue";
 
-const MarkdownInput = ({ placeholder, className, action, value }) => {
+const MarkdownInput = ({ placeholder, className, action, value, formId }) => {
     const dispatch = useDispatch();
     const renderElement = useCallback((props) => <Element {...props} />, []);
     const editor = useMemo(
@@ -100,7 +100,7 @@ const MarkdownInput = ({ placeholder, className, action, value }) => {
         <Slate
             editor={editor}
             initialValue={value}
-            onChange={(v) => dispatch(action(v))}
+            onChange={(v) => dispatch(action({ value: v, id: formId }))}
         >
             <Editable
                 onFocus={() => setIsFocused(true)}

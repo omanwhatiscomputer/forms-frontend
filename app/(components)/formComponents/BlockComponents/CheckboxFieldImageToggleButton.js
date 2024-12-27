@@ -15,6 +15,7 @@ const CheckboxFieldImageToggleButton = ({
     includesImage = false,
     title = "Modal",
     action,
+    formId,
 }) => {
     const dispatch = useDispatch();
 
@@ -28,6 +29,7 @@ const CheckboxFieldImageToggleButton = ({
                 action={action}
                 blockId={blockId}
                 checkboxId={checkboxId}
+                formId={formId}
             />
 
             <button
@@ -39,7 +41,8 @@ const CheckboxFieldImageToggleButton = ({
                           onClick: () =>
                               dispatch(
                                   action({
-                                      id: blockId,
+                                      id: formId,
+                                      bId: blockId,
                                       cbId: checkboxId,
                                       value: false,
                                       url: "",

@@ -75,4 +75,15 @@ export const defaultValue = {
             ],
         };
     },
+    newForm: (id, mode, block) => ({
+        Id: id,
+        Title: "",
+        Tags: [],
+        Description: markdownDefault,
+        Topic: "Education",
+        BannerUrl: "https://fakeimg.pl/600x400/f0cece/909090?font=lobster",
+        AccessControl: "Private",
+        Blocks: [block],
+        mode: mode,
+    }),
 };

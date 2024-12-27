@@ -27,6 +27,7 @@ const ImageUploadOnCheckboxToggle = ({
     action,
     blockId,
     checkboxId,
+    formId,
 }) => {
     const [file, setFile] = useState(null);
     const dispatch = useDispatch();
@@ -43,8 +44,9 @@ const ImageUploadOnCheckboxToggle = ({
             action({
                 url: urlObject.url,
                 value: true,
-                id: blockId,
+                bId: blockId,
                 cbId: checkboxId,
+                id: formId,
             })
         );
         // console.log(urlObject.url);

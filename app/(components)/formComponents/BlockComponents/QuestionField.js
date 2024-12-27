@@ -14,11 +14,12 @@ import {
     updateQuestionFieldByBlockIdQuestionFieldId,
 } from "@/lib/features/form/formSlice";
 
-const QuestionField = ({ type, content, blockId, questionId }) => {
+const QuestionField = ({ type, content, blockId, questionId, formId }) => {
     const renderButtons = () => {
         return (
             <>
                 <FormButton
+                    formId={formId}
                     type={"button"}
                     className="text-2xl text-foreground bg-slate-200 dark:bg-gray-900 p-1 rounded-sm hover:bg-slate-300 hover:dark:bg-gray-800 hover:text-primary"
                     blockId={blockId}
@@ -30,6 +31,7 @@ const QuestionField = ({ type, content, blockId, questionId }) => {
                     <RxText />
                 </FormButton>
                 <FormButton
+                    formId={formId}
                     action={
                         insertNewQuestionFieldUnderQuestionFieldByBlockIdQuestionFieldId
                     }
@@ -42,6 +44,7 @@ const QuestionField = ({ type, content, blockId, questionId }) => {
                     <FiImage />
                 </FormButton>
                 <FormButton
+                    formId={formId}
                     blockId={blockId}
                     questionId={questionId}
                     action={deleteQuestionFieldByBlockIdQuestionFieldId}
@@ -77,6 +80,7 @@ const QuestionField = ({ type, content, blockId, questionId }) => {
         <div className="flex mb-2" key={questionId}>
             <div className="flex-1 overflow-x-hidden">
                 <RichTextInput
+                    formId={formId}
                     placeholder={"Add text"}
                     placeholderClassName={"pl-4 translate-y-2"}
                     className={
