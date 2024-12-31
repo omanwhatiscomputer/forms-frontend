@@ -1,5 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
 
+import { maxNumberOfSuggestions } from "@/constants/misc";
 import {
     addExistingUserTagToForm,
     selectFormTags,
@@ -35,7 +36,7 @@ const FormTagAddNew = () => {
         filteredTags = filteredTags.filter(
             (t) => !formTags.find((ft) => ft.TagName === t.tagName)
         );
-        return filteredTags;
+        return filteredTags.slice(0, maxNumberOfSuggestions);
     };
     const handleSuggestionClick = async (tagName) => {
         const ft = formTags.find((t) => t.TagName === tagName);

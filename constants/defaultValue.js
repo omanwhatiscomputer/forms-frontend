@@ -60,14 +60,14 @@ export const defaultValue = {
                 {
                     Id: uuidv4(),
                     BlockId: newBlockId,
-                    Content: "content",
+                    Content: "",
                     IncludesImage: false,
                     ImageUrl: "",
                 },
                 {
                     Id: uuidv4(),
                     BlockId: newBlockId,
-                    Content: "content",
+                    Content: "",
                     IncludesImage: true,
                     ImageUrl:
                         "https://fakeimg.pl/600x400/f0cece/909090?font=lobster",
@@ -78,6 +78,7 @@ export const defaultValue = {
     newForm: (id, mode, block) => ({
         Id: id,
         Title: "",
+        AuthorizedUsers: [],
         Tags: [],
         Description: markdownDefault,
         Topic: "Education",

@@ -48,7 +48,7 @@ const RichTextInput = ({
         <div className="flex flex-col-reverse" id={questionId || blockId}>
             <Slate
                 editor={editor}
-                initialValue={richtextDefault}
+                initialValue={value || richtextDefault}
                 value={value}
                 onChange={(v) =>
                     dispatch(

@@ -59,7 +59,7 @@ const QuestionField = ({ type, content, blockId, questionId, formId }) => {
 
     if (type === "Image") {
         return (
-            <div className="flex my-4" key={questionId}>
+            <div className="flex mb-4" key={questionId}>
                 <div className="flex justify-center overflow-x-auto flex-1">
                     <Image
                         src={content}

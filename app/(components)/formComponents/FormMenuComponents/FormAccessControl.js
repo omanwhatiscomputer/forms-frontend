@@ -1,40 +1,32 @@
 /* eslint-disable react/prop-types */
-import {
-    selectFormAccessControl,
-    updateFormAccessControl,
-} from "@/lib/features/form/formSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { selectFormAccessControl } from "@/lib/features/form/formSlice";
+import { useSelector } from "react-redux";
+import FormAccessModal from "./FormAccessModal";
+import { useState } from "react";
 
 /* eslint-disable react/react-in-jsx-scope */
-const FormAccessControl = ({ className, formId }) => {
-    const dispatch = useDispatch();
+const FormAccessControl = ({ formId }) => {
     const formAccessControl = useSelector((state) =>
         selectFormAccessControl(state, formId)
     );
+    const [openModal, setOpenModal] = useState(false);
 
     return (
-        <div className="flex">
-            <div className="text-xs translate-y-[9px] translate-x-[18px] w-0 h-0 overflow-visible z-10 pointer-events-none cursor-default">
-                Access:
-            </div>
-            <select
+        <>
+            <FormAccessModal
                 value={formAccessControl}
-                onChange={(e) =>
-                    dispatch(
-                        updateFormAccessControl({
-                            accessControl: e.target.value,
-                            id: formId,
-                        })
-                    )
-                }
-                name="access"
-                id="access"
-                className={`rounded bg-background h-7 pl-16 bg-opacity-50 text-xs border-[1px] focus:ring-0 border-slate-500 dark:border-gray-600 hover:text-primary ${className}`}
+                formId={formId}
+                setOpenModal={setOpenModal}
+                openModal={openModal}
+                title="Access Control"
+            />
+            <button
+                onClick={() => setOpenModal(true)}
+                className="text-xs border-[1px] rounded-lg border-foreground px-2 hover:bg-slate-300 dark:hover:bg-gray-800 hover:text-primary"
             >
-                <option value="Public">Public</option>
-                <option value="Private">Private</option>
-            </select>
-        </div>
+                Access: {formAccessControl}
+            </button>
+        </>
     );
 };
 

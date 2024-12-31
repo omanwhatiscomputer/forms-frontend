@@ -2,6 +2,90 @@ import { formTopics } from "@/constants/formTopics";
 import { emitMessage } from "../(components)/NotificationToaster";
 import { parseBodyFromResponseObjectBodyAsReadStream } from "./client.utils";
 
+export const makeClientUpdateFormByFormIdRequest = async (formId, data) => {
+    const url =
+        process.env.NEXT_PUBLIC_DOTNET_BACKEND_API_BASE_URL +
+        "/api/form/" +
+        formId;
+    const headers = {
+        "Content-Type": "application/json",
+    };
+    const options = {
+        method: "PUT",
+        headers: headers,
+        body: JSON.stringify(data),
+        credentials: "include",
+    };
+    const responseObject = await fetch(url, options);
+    if (responseObject.ok) {
+        const data = await responseObject.json();
+        return { status: responseObject.status, body: data };
+    }
+    return { status: responseObject.status, body: null };
+};
+
+export const makeClientGetFormByFormIdRequest = async (formId) => {
+    const url =
+        process.env.NEXT_PUBLIC_DOTNET_BACKEND_API_BASE_URL +
+        "/api/form/" +
+        formId;
+    const headers = {
+        "Content-Type": "application/json",
+    };
+    const options = {
+        method: "GET",
+        headers: headers,
+        credentials: "include",
+    };
+    const responseObject = await fetch(url, options);
+    if (responseObject.ok) {
+        const data = await responseObject.json();
+        return { status: responseObject.status, body: data };
+    }
+    return { status: responseObject.status, body: null };
+};
+
+export const makeClientFormCreationRequest = async (data) => {
+    const url =
+        process.env.NEXT_PUBLIC_DOTNET_BACKEND_API_BASE_URL + "/api/form";
+    const headers = {
+        "Content-Type": "application/json",
+    };
+    const options = {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(data),
+        credentials: "include",
+    };
+    const responseObject = await fetch(url, options);
+    if (responseObject.ok) {
+        const data = await responseObject.json();
+        return { status: responseObject.status, body: data };
+    }
+    return { status: responseObject.status, body: null };
+};
+
+export const makeClientGetAllUsersAutocompleteRequest = async (searchTerm) => {
+    const url =
+        process.env.NEXT_PUBLIC_DOTNET_SEARCH_API_BASE_URL +
+        "/api/autocomplete/users" +
+        `?searchTerm=${searchTerm}`;
+    const headers = {
+        "Content-Type": "application/json",
+    };
+    const options = {
+        method: "GET",
+        headers: headers,
+        credentials: "include",
+    };
+    const responseObject = await fetch(url, options);
+    if (responseObject.ok) {
+        const data = await responseObject.json();
+        return { status: responseObject.status, body: data };
+    }
+    return { status: responseObject.status, body: null };
+};
+
 export const makeClientRegisterNewUserTagRequest = async (data) => {
     // AuthorID
     // NewTagName

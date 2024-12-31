@@ -22,7 +22,7 @@ const CheckboxField = ({
     formId,
 }) => {
     return (
-        <div className="my-2">
+        <div className="my-2 flex flex-col flex-1">
             <div className="my-2 flex">
                 <div className="flex flex-1">
                     <input

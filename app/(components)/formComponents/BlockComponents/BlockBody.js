@@ -7,18 +7,22 @@ import { RxText } from "react-icons/rx";
 import { FiImage } from "react-icons/fi";
 
 import FormButton from "../FormButton";
-import QuestionField from "./QuestionField";
-import CheckboxField from "./CheckboxField";
-import { useSelector } from "react-redux";
+
+import { useDispatch, useSelector } from "react-redux";
 import {
     addNewCheckboxOptionByBlockId,
     addNewQuestionFieldByBlockId,
+    reorderCheckboxOptions,
+    reorderQuestionGroup,
     selectBlockInputTypeByBlockId,
     selectCheckboxOptionsByBlockId,
     selectQuestionGroupByBlockId,
-    updateCheckboxFieldTextInputByBlockIdCheckboxFieldId,
 } from "@/lib/features/form/formSlice";
 import { useParams } from "next/navigation";
+
+import { Reorder } from "framer-motion";
+import CheckboxDnDItem from "./CheckboxDnDItem";
+import QuestionDnDItem from "./QuestionDnDItem";
 
 /* eslint-disable react/react-in-jsx-scope */
 const BlockBody = ({ blockId }) => {
@@ -33,6 +37,8 @@ const BlockBody = ({ blockId }) => {
     const blockCheckboxOptions = useSelector((state) =>
         selectCheckboxOptionsByBlockId(state, id, blockId)
     );
+    const dispatch = useDispatch();
+
     return (
         <div className="pt-4">
             <SectionDivider content={"Additional Fields"} />
@@ -64,16 +70,28 @@ const BlockBody = ({ blockId }) => {
             </div>
             {blockQuestionGroup.length > 0 ? (
                 <div className="pt-4 mb-8">
-                    {blockQuestionGroup.map((bqg) => (
-                        <QuestionField
-                            formId={id}
-                            key={bqg.Id}
-                            type={bqg.Type}
-                            questionId={bqg.Id}
-                            blockId={blockId}
-                            content={bqg.Content}
-                        />
-                    ))}
+                    <Reorder.Group
+                        axis="y"
+                        onReorder={(val) =>
+                            dispatch(
+                                reorderQuestionGroup({
+                                    id: id,
+                                    bId: blockId,
+                                    bqg: val,
+                                })
+                            )
+                        }
+                        values={blockQuestionGroup}
+                    >
+                        {blockQuestionGroup.map((bq) => (
+                            <QuestionDnDItem
+                                key={bq.Id}
+                                bq={bq}
+                                formId={id}
+                                blockId={blockId}
+                            />
+                        ))}
+                    </Reorder.Group>
                 </div>
             ) : (
                 <div className="flex justify-center items-center py-4">
@@ -95,20 +113,28 @@ const BlockBody = ({ blockId }) => {
                         </FormButton>
                     </div>
                     <div key={`${blockId}-1`}>
-                        {blockCheckboxOptions.map((co) => (
-                            <CheckboxField
-                                formId={id}
-                                key={co.Id + blockId}
-                                includesImage={co.IncludesImage}
-                                content={co.content}
-                                imageUrl={co.ImageUrl}
-                                blockId={blockId}
-                                checkboxId={co.Id}
-                                action={
-                                    updateCheckboxFieldTextInputByBlockIdCheckboxFieldId
-                                }
-                            />
-                        ))}
+                        <Reorder.Group
+                            axis="y"
+                            onReorder={(val) =>
+                                dispatch(
+                                    reorderCheckboxOptions({
+                                        id: id,
+                                        bId: blockId,
+                                        cos: val,
+                                    })
+                                )
+                            }
+                            values={blockCheckboxOptions}
+                        >
+                            {blockCheckboxOptions.map((co) => (
+                                <CheckboxDnDItem
+                                    key={co.Id}
+                                    co={co}
+                                    blockId={blockId}
+                                    formId={id}
+                                />
+                            ))}
+                        </Reorder.Group>
                     </div>
                 </>
             )}

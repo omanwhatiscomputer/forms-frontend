@@ -3,10 +3,13 @@
 
 import { useState } from "react";
 import ImageUpload from "../ImageUpload";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { questionType } from "@/constants/questionType";
+import { useTheme } from "next-themes";
+import { selectUserId } from "@/lib/features/general/authSlice";
 
 const FormButton = ({
+    form,
     className,
     type,
     children,
@@ -20,6 +23,8 @@ const FormButton = ({
 }) => {
     const dispatch = useDispatch();
     const [openModal, setOpenModal] = useState(false);
+    const { theme } = useTheme();
+    const userId = useSelector((state) => selectUserId(state));
     return (
         <>
             {forImageUpload && (
@@ -47,6 +52,9 @@ const FormButton = ({
                                       qtype: questionType.text,
                                       bId: blockId,
                                       cbId: checkboxId,
+                                      theme: theme,
+                                      form: form,
+                                      userId: userId,
                                   })
                               ),
                       })}

@@ -70,6 +70,6 @@ export const config = {
         "/popular",
         "/dashboard/:path*",
         "/form/:path*",
-        "/createform/:path*",
+        "/myforms/:path*",
     ],
 };

@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 
-import { useState } from "react";
 import FormButton from "./FormButton";
 import {
     deleteBlockByBlockId,
@@ -10,23 +9,35 @@ import {
 import { useParams } from "next/navigation";
 
 /* eslint-disable react/react-in-jsx-scope */
-const FormBlock = ({ children, className, displayMenu = false, blockId }) => {
+const FormBlock = ({
+    children,
+    className,
+    displayMenu = false,
+    blockId,
+    activeBlock,
+    setActiveBlock,
+}) => {
+    const isActive = () => {
+        return activeBlock === blockId;
+    };
     const { id } = useParams();
-    const [isFocused, setIsFocused] = useState(false);
+
     return (
         <div
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-            onClick={() => setIsFocused(true)}
-            className={`px-6 pt-1 border-l-[2px] border-background focus-within:border-primary border-slate-400 dark:border-gray-700 ${className} ${
-                isFocused && "border-primary"
+            onFocus={() => setActiveBlock(blockId)}
+            onBlur={() => setActiveBlock(null)}
+            onClick={() => setActiveBlock(blockId)}
+            className={`px-6 pt-1 border-l-[2px] focus-within:border-primary ${className} ${
+                isActive()
+                    ? "border-primary"
+                    : "border-slate-400 dark:border-gray-700"
             }`}
         >
             {children}
             {displayMenu && (
                 <div
                     className={`text-center mt-4 transition-height overflow-hidden duration-[300ms] ease-in-out ${
-                        !isFocused ? "max-h-0" : "max-h-[100px]"
+                        !isActive() ? "max-h-0" : "max-h-[100px]"
                     }`}
                 >
                     <div className="border-b-[1px] border-slate-400">
