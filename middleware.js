@@ -11,19 +11,20 @@ const strictlyPublicPaths = ["/register", "/signin"];
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request) {
-    const isAuthorized = await authorize(request);
-    if (!isAuthorized && includesPath(request, publicPaths)) {
-        return NextResponse.next();
-    }
-    if (isAuthorized && includesPath(request, strictlyPublicPaths)) {
-        return NextResponse.redirect(new URL("/", request.url));
-    }
-    if (isAuthorized) {
-        return NextResponse.next();
-    }
-    if (request.nextUrl.pathname === "/") return NextResponse.next();
+    return NextResponse.next();
+    // const isAuthorized = await authorize(request);
+    // if (!isAuthorized && includesPath(request, publicPaths)) {
+    //     return NextResponse.next();
+    // }
+    // if (isAuthorized && includesPath(request, strictlyPublicPaths)) {
+    //     return NextResponse.redirect(new URL("/", request.url));
+    // }
+    // if (isAuthorized) {
+    //     return NextResponse.next();
+    // }
+    // if (request.nextUrl.pathname === "/") return NextResponse.next();
 
-    return NextResponse.redirect(new URL("/", request.url));
+    // return NextResponse.redirect(new URL("/", request.url));
 }
 
 const includesPath = (request, paths) => {
@@ -31,19 +32,6 @@ const includesPath = (request, paths) => {
 };
 
 const authorize = async (request) => {
-    const cookieHeader = request.headers.get("cookie");
-    if (!cookieHeader) return false;
-
-    // Parse cookies manually
-    const cookies = Object.fromEntries(
-        cookieHeader.split("; ").map((cookie) => {
-            const [name, ...rest] = cookie.split("=");
-            return [name, rest.join("=")];
-        })
-    );
-
-    console.log(cookies);
-
     const jwt = request.cookies.get("jwt");
     const userId = request.cookies.get("userId");
 
