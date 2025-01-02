@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
 
-const publicPaths = ["/register", "/signin", "/latest", "/popular"];
+const publicPaths = [
+    "/register",
+    "/signin",
+    "/latest",
+    "/popular",
+    "/viewform",
+];
 const strictlyPublicPaths = ["/register", "/signin"];
 
 // This function can be marked `async` if using `await` inside

@@ -54,7 +54,7 @@ export default function Home() {
                                 <button
                                     onClick={async () => {
                                         await router.push(
-                                            `/form/${f.formTemplateId}`
+                                            `/viewform/${f.formTemplateId}`
                                         );
                                         router.refresh();
                                     }}
