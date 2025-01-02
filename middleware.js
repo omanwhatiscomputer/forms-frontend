@@ -31,6 +31,19 @@ const includesPath = (request, paths) => {
 };
 
 const authorize = async (request) => {
+    const cookieHeader = request.headers.get("cookie");
+    if (!cookieHeader) return false;
+
+    // Parse cookies manually
+    const cookies = Object.fromEntries(
+        cookieHeader.split("; ").map((cookie) => {
+            const [name, ...rest] = cookie.split("=");
+            return [name, rest.join("=")];
+        })
+    );
+
+    console.log(cookies);
+
     const jwt = request.cookies.get("jwt");
     const userId = request.cookies.get("userId");
 
