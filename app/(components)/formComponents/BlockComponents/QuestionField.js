@@ -11,10 +11,14 @@ import Image from "next/image";
 import {
     deleteQuestionFieldByBlockIdQuestionFieldId,
     insertNewQuestionFieldUnderQuestionFieldByBlockIdQuestionFieldId,
+    selectFormMode,
     updateQuestionFieldByBlockIdQuestionFieldId,
 } from "@/lib/features/form/formSlice";
+import { useSelector } from "react-redux";
+import { formMode } from "@/constants/formMode";
 
 const QuestionField = ({ type, content, blockId, questionId, formId }) => {
+    const mode = useSelector((state) => selectFormMode(state, formId));
     const renderButtons = () => {
         return (
             <>
@@ -69,9 +73,12 @@ const QuestionField = ({ type, content, blockId, questionId, formId }) => {
                         alt="Image"
                     />
                 </div>
-                <div className="flex items-center basis-[110px] grow-0 shrink-0 ml-1">
-                    {renderButtons()}
-                </div>
+
+                {mode !== formMode.readonly && mode !== formMode.respond && (
+                    <div className="flex items-center basis-[110px] grow-0 shrink-0 ml-1">
+                        {renderButtons()}
+                    </div>
+                )}
             </div>
         );
     }
@@ -83,18 +90,22 @@ const QuestionField = ({ type, content, blockId, questionId, formId }) => {
                     formId={formId}
                     placeholder={"Add text"}
                     placeholderClassName={"pl-4 translate-y-2"}
-                    className={
-                        "border-[1px] rounded-md border-foreground focus:border-primary caret-primary transition-colors duration-200 ease-in-out w-full"
-                    }
+                    className={`rounded-md border-foreground focus:border-primary caret-primary transition-colors duration-200 ease-in-out w-full ${
+                        mode !== formMode.readonly && mode !== formMode.respond
+                            ? "border-[1px] "
+                            : "border-0"
+                    }`}
                     blockId={blockId}
                     questionId={questionId}
                     value={content}
                     action={updateQuestionFieldByBlockIdQuestionFieldId}
                 />
             </div>
-            <div className="translate-y-[5px] basis-[110px] grow-0 shrink-0 ml-1">
-                {renderButtons()}
-            </div>
+            {mode !== formMode.readonly && mode !== formMode.respond && (
+                <div className="translate-y-[5px] basis-[110px] grow-0 shrink-0 ml-1">
+                    {renderButtons()}
+                </div>
+            )}
         </div>
     );
 };

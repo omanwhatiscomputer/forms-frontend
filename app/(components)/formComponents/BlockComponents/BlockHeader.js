@@ -7,10 +7,12 @@ import BlockRequired from "./HeaderComponents/BlockRequired";
 import {
     selectBlockDescriptionByBlockId,
     selectBlockTitleByBlockId,
+    selectFormMode,
     updateBlockDescriptionByBlockId,
     updateBlockTitleByBlockId,
 } from "@/lib/features/form/formSlice";
 import { useParams } from "next/navigation";
+import { formMode } from "@/constants/formMode";
 
 /* eslint-disable react/react-in-jsx-scope */
 const BlockHeader = ({ blockId }) => {
@@ -21,17 +23,20 @@ const BlockHeader = ({ blockId }) => {
     const blockDescription = useSelector((state) =>
         selectBlockDescriptionByBlockId(state, id, blockId)
     );
+    const mode = useSelector((state) => selectFormMode(state, id));
 
     return (
         <div className="border-t-[1px] border-t-slate-300 dark:border-t-gray-600 pt-2">
-            <div className="flex justify-between pb-4">
-                <BlockInputType
-                    name={"inputType"}
-                    blockId={blockId}
-                    formId={id}
-                />
-                <BlockRequired blockId={blockId} formId={id} />
-            </div>
+            {mode !== formMode.readonly && mode !== formMode.respond && (
+                <div className={`flex justify-between pb-4`}>
+                    <BlockInputType
+                        name={"inputType"}
+                        blockId={blockId}
+                        formId={id}
+                    />
+                    <BlockRequired blockId={blockId} formId={id} />
+                </div>
+            )}
             <BlockTextInput
                 formId={id}
                 name="title"
@@ -46,9 +51,11 @@ const BlockHeader = ({ blockId }) => {
             />
             <RichTextInput
                 formId={id}
-                className={
-                    "border-0 border-b-[2px] focus:border-primary transition-colors duration-200 ease-in-out border-foreground caret-primary"
-                }
+                className={`focus:border-primary transition-colors duration-200 ease-in-out border-foreground caret-primary ${
+                    mode !== formMode.readonly && mode !== formMode.respond
+                        ? "border-0 border-b-[2px]"
+                        : "border-0"
+                }`}
                 placeholder={"Question Description"}
                 placeholderClassName={"translate-y-[10px] pl-4"}
                 action={updateBlockDescriptionByBlockId}

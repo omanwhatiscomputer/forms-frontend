@@ -1,5 +1,5 @@
 import {
-    saveFrom,
+    saveForm,
     selectForm,
     updateFormBannerUrl,
 } from "@/lib/features/form/formSlice";
@@ -8,14 +8,29 @@ import FormAccessControl from "./FormMenuComponents/FormAccessControl";
 import FormTopic from "./FormMenuComponents/FormTopic";
 import { useParams } from "next/navigation";
 import { useSelector } from "react-redux";
+import { formMode } from "@/constants/formMode";
+import SubmitResponseButton from "../blockResponseComponents/SubmitResponseButton";
 
 /* eslint-disable react/react-in-jsx-scope */
 const FormMenu = () => {
     const { id } = useParams();
     const form = useSelector((state) => selectForm(state, id));
+    if (form.mode === formMode.readonly) {
+        return (
+            <div className="flex justify-end items-center px-2 md:px-4 lg:px-20 xl:px-52 py-1 border-b-[1px] border-slate-400 dark:border-gray-600"></div>
+        );
+    }
+
+    if (form.mode === formMode.respond) {
+        return (
+            <div className="flex justify-end items-center px-2 md:px-4 lg:px-20 xl:px-52 py-1 border-b-[1px] border-slate-400 dark:border-gray-600">
+                <SubmitResponseButton />
+            </div>
+        );
+    }
 
     return (
-        <div className="flex justify-between px-2 md:px-4 lg:px-20 xl:px-52">
+        <div className="fixed w-full top-[37px] z-20 bg-background flex items-center justify-between px-2 md:px-4 lg:px-20 xl:px-52 py-1 border-b-[1px] border-slate-400 dark:border-gray-600">
             <div className="flex">
                 <FormTopic className={"text-xs"} />
                 <FormButton
@@ -41,7 +56,7 @@ const FormMenu = () => {
                     className={
                         "text-sm px-2 dark:hover:bg-gray-800 hover:text-primary"
                     }
-                    action={saveFrom}
+                    action={saveForm}
                     formId={id}
                 >
                     Save

@@ -15,11 +15,14 @@ import { Editable, ReactEditor, Slate, withReact } from "slate-react";
 import { SHORTCUTS } from "./slatejs/markdown/constants";
 import { Element, Leaf, withShortcuts } from "./slatejs/markdown/editor";
 import CustomPlaceholder from "./slatejs/CustomPlaceholder";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { markdownDefault } from "@/constants/defaultValue";
+import { selectFormMode } from "@/lib/features/form/formSlice";
+import { formMode } from "@/constants/formMode";
 
 const MarkdownInput = ({ placeholder, className, action, value, formId }) => {
     const dispatch = useDispatch();
+    const mode = useSelector((state) => selectFormMode(state, formId));
     const renderElement = useCallback((props) => <Element {...props} />, []);
     const editor = useMemo(
         () => withShortcuts(withReact(withHistory(createEditor()))),
@@ -103,6 +106,8 @@ const MarkdownInput = ({ placeholder, className, action, value, formId }) => {
             onChange={(v) => dispatch(action({ value: v, id: formId }))}
         >
             <Editable
+                {...((mode === formMode.readonly ||
+                    mode === formMode.respond) && { readOnly: true })}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
                 decorate={decorate}
@@ -112,9 +117,11 @@ const MarkdownInput = ({ placeholder, className, action, value, formId }) => {
                 spellCheck
                 className={`${editorStyle}`}
             />
-            {(editor.children.length === 0 ||
-                JSON.stringify(editor.children) ===
-                    JSON.stringify(markdownDefault)) &&
+            {mode !== formMode.readonly &&
+                mode !== formMode.respond &&
+                (editor.children.length === 0 ||
+                    JSON.stringify(editor.children) ===
+                        JSON.stringify(markdownDefault)) &&
                 !isFocused && (
                     <CustomPlaceholder
                         isFocused={isFocused}

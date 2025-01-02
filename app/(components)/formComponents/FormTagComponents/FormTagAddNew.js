@@ -1,8 +1,10 @@
 /* eslint-disable react/react-in-jsx-scope */
 
+import { formMode } from "@/constants/formMode";
 import { maxNumberOfSuggestions } from "@/constants/misc";
 import {
     addExistingUserTagToForm,
+    selectFormMode,
     selectFormTags,
 } from "@/lib/features/form/formSlice";
 import { selectUserId } from "@/lib/features/general/authSlice";
@@ -20,7 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 // eslint-disable-next-line react/prop-types
 const FormTagAddNew = () => {
     const { id } = useParams();
-
+    const mode = useSelector((state) => selectFormMode(state, id));
     const formTags = useSelector((state) => selectFormTags(state, id));
     const userTags = useSelector((state) => selectUserTags(state));
     const { theme } = useTheme();
@@ -43,7 +45,7 @@ const FormTagAddNew = () => {
         if (ft) return;
 
         const ut = userTags.find((t) => t.tagName === tagName);
-        console.log(ut);
+
         if (ut) {
             await dispatch(
                 addExistingUserTagToForm({
@@ -87,6 +89,11 @@ const FormTagAddNew = () => {
         }
         setNewTag("");
     };
+
+    if (mode === formMode.readonly || mode === formMode.respond) {
+        return <div> </div>;
+    }
+
     return (
         <Popover
             aria-labelledby="default-popover"

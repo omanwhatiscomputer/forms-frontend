@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const publicPaths = ["/register", "/signin", "/latest", "/popular", "/form"];
+const publicPaths = ["/register", "/signin", "/latest", "/popular"];
 const strictlyPublicPaths = ["/register", "/signin"];
 
 // This function can be marked `async` if using `await` inside
@@ -71,5 +71,6 @@ export const config = {
         "/dashboard/:path*",
         "/form/:path*",
         "/myforms/:path*",
+        "/response/:path*",
     ],
 };

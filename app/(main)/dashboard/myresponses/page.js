@@ -1,18 +1,21 @@
 /* eslint-disable react/react-in-jsx-scope */
 "use client";
-import { makeClientGetAllFormsByUserIdRequest } from "@/app/utils/client.api.utils";
+import { makeClientGetAllFormsResponseByRespondentId } from "@/app/utils/client.api.utils";
 import { selectUserId } from "@/lib/features/general/authSlice";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
-const Dashboard = () => {
+import { v4 } from "uuid";
+
+const MyResponses = () => {
     const userId = useSelector(selectUserId);
     const [forms, setForms] = useState([]);
     useEffect(() => {
         const getForms = async () => {
-            const res = await makeClientGetAllFormsByUserIdRequest(userId);
+            const res = await makeClientGetAllFormsResponseByRespondentId(
+                userId
+            );
             setForms(res.body);
         };
         getForms();
@@ -22,7 +25,7 @@ const Dashboard = () => {
     return (
         <main className="main">
             <div className="w-full px-4 flex justify-end hover:text-primary">
-                <Link href={`/myforms/createform/${uuidv4()}`}>CreateForm</Link>
+                <Link href={`/myforms/createform/${v4()}`}>CreateForm</Link>
             </div>
             <div>
                 <Link className="hover:text-primary ml-6" href={"/dashboard"}>
@@ -40,19 +43,19 @@ const Dashboard = () => {
                 <div className="mt-4 mx-6">
                     {forms.map((f) => (
                         <div
-                            key={f.formTemplateId}
+                            key={f.id}
                             className="flex w-full justify-between border-b-[1px] border-foreground border-dotted"
                         >
-                            <div className="ml-4 " key={f.formTemplateId}>
+                            <div className="ml-4 " key={f.id}>
                                 <span className="font-bold">{f.title}</span>
                                 <br />
-                                {f.description}
+                                Responded at: {f.respondedAt}
                             </div>
                             <div>
                                 <button
                                     onClick={async () => {
                                         await router.push(
-                                            `/form/${f.formTemplateId}`
+                                            `/response/${f.id}/${f.parentTemplateId}`
                                         );
                                         router.refresh();
                                     }}
@@ -64,7 +67,7 @@ const Dashboard = () => {
                                 <button
                                     onClick={async () => {
                                         await router.push(
-                                            `/myforms/updateform/${f.formTemplateId}`
+                                            `/response/${f.id}/${f.parentTemplateId}/update`
                                         );
                                         router.refresh();
                                     }}
@@ -82,4 +85,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default MyResponses;

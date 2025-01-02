@@ -3,24 +3,31 @@
 import { useDispatch, useSelector } from "react-redux";
 import MarkdownInput from "../MarkdownInput";
 import {
+    selectForm,
     selectFormDescription,
+    selectFormMode,
     selectFormTitle,
     updateFormDescription,
     updateFormTitle,
 } from "@/lib/features/form/formSlice";
 import { useParams } from "next/navigation";
+import { formMode } from "@/constants/formMode";
 
 const FormHeader = () => {
     const { id } = useParams();
+    const mode = useSelector((state) => selectFormMode(state, id));
     const dispatch = useDispatch();
     const formTitle = useSelector((state) => selectFormTitle(state, id));
     const formDescription = useSelector((state) =>
         selectFormDescription(state, id)
     );
+    const form = useSelector((state) => selectForm(state, id));
 
     return (
         <div>
             <input
+                {...((mode === formMode.readonly ||
+                    mode === formMode.respond) && { disabled: true })}
                 name={"title"}
                 type={"text"}
                 placeholder={"Form Title"}
@@ -30,15 +37,20 @@ const FormHeader = () => {
                     dispatch(updateFormTitle({ title: e.target.value, id: id }))
                 }
             />
-            <MarkdownInput
-                placeholder={"Form Description"}
-                className={
-                    "border-0 border-b-[2px] transition-colors duration-200 ease-in-out caret-primary"
-                }
-                formId={id}
-                value={formDescription}
-                action={updateFormDescription}
-            />
+
+            {Object.keys(form).length > 0 && (
+                <MarkdownInput
+                    placeholder={"Form Description"}
+                    className={`transition-colors duration-200 ease-in-out caret-primary ${
+                        mode === formMode.readonly || mode === formMode.respond
+                            ? "border-0"
+                            : "border-0 border-b-[2px]"
+                    }`}
+                    formId={id}
+                    value={formDescription}
+                    action={updateFormDescription}
+                />
+            )}
         </div>
     );
 };

@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Reorder } from "framer-motion";
 import {
-    initializeFormBeforeUpdate,
+    initializeExistingForm,
     reorderFormBlock,
     selectFormBlocks,
 } from "@/lib/features/form/formSlice";
@@ -16,20 +16,28 @@ import FormHeader from "@/app/(components)/formComponents/FormHeader";
 import FormMenu from "@/app/(components)/formComponents/FormMenu";
 import FormTag from "@/app/(components)/formComponents/FormTag";
 import FormBlockDnDItem from "@/app/(components)/formComponents/FormBlockDnDItem";
+import { formMode } from "@/constants/formMode";
+import { formStyle } from "@/constants/misc";
 
 const UpdateForm = () => {
     const { id } = useParams();
     const { theme } = useTheme();
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(initializeFormBeforeUpdate({ formId: id, theme: theme }));
+        dispatch(
+            initializeExistingForm({
+                formId: id,
+                theme: theme,
+                mode: formMode.update,
+            })
+        );
     }, []);
     const formBlocks = useSelector((state) => selectFormBlocks(state, id));
     const [activeBlock, setActiveBlock] = useState(null);
     return (
         <main className="main">
             <FormMenu />
-            <div className="w-full px-5 sm:px-10 md:px-36 lg:px-64 xl:px-96">
+            <div className={`${formStyle}`}>
                 <FormBlock
                     className={"mt-2"}
                     blockId={"metadata"}

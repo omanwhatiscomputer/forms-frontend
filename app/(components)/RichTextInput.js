@@ -17,8 +17,10 @@ import {
 } from "./slatejs/richtext/editor";
 import { HOTKEYS } from "./slatejs/richtext/constants";
 import CustomPlaceholder from "./slatejs/CustomPlaceholder";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { richtextDefault } from "@/constants/defaultValue";
+import { selectFormMode } from "@/lib/features/form/formSlice";
+import { formMode } from "@/constants/formMode";
 
 const RichTextInput = ({
     className,
@@ -37,6 +39,7 @@ const RichTextInput = ({
 
     // const [value, setValue] = useState(initialValue);
     const [isFocused, setIsFocused] = useState(false);
+    const mode = useSelector((state) => selectFormMode(state, formId));
 
     // const handleValueChange = (v) => {
     //     setValue(v);
@@ -88,6 +91,8 @@ const RichTextInput = ({
                 </Toolbar>
 
                 <Editable
+                    {...((mode === formMode.readonly ||
+                        mode === formMode.respond) && { readOnly: true })}
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
                     className={`data-slate-editor ${editorStyle}`}
@@ -104,9 +109,11 @@ const RichTextInput = ({
                         }
                     }}
                 />
-                {(editor.children.length === 0 ||
-                    JSON.stringify(editor.children) ===
-                        JSON.stringify(richtextDefault)) &&
+                {mode !== formMode.readonly &&
+                    mode !== formMode.respond &&
+                    (editor.children.length === 0 ||
+                        JSON.stringify(editor.children) ===
+                            JSON.stringify(richtextDefault)) &&
                     !isFocused && (
                         <CustomPlaceholder
                             isFocused={isFocused}

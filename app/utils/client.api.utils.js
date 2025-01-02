@@ -2,6 +2,169 @@ import { formTopics } from "@/constants/formTopics";
 import { emitMessage } from "../(components)/NotificationToaster";
 import { parseBodyFromResponseObjectBodyAsReadStream } from "./client.utils";
 
+export const makeClientGetAllFormsRequest = async () => {
+    const url =
+        process.env.NEXT_PUBLIC_DOTNET_BACKEND_API_BASE_URL + "/api/form/all";
+    const headers = {
+        "Content-Type": "application/json",
+    };
+    const options = {
+        method: "GET",
+        headers: headers,
+        credentials: "include",
+    };
+    const responseObject = await fetch(url, options);
+    if (responseObject.ok) {
+        const data = await responseObject.json();
+
+        return {
+            status: responseObject.status,
+            body: data,
+        };
+    }
+    return { status: responseObject.status, body: null };
+};
+
+export const makeClientGetAllFormsResponseByFormIdRequest = async (formId) => {
+    const url =
+        process.env.NEXT_PUBLIC_DOTNET_BACKEND_API_BASE_URL +
+        "/api/formresponse/all";
+    const headers = {
+        "Content-Type": "application/json",
+    };
+    const options = {
+        method: "GET",
+        headers: headers,
+        credentials: "include",
+    };
+    const responseObject = await fetch(url, options);
+    if (responseObject.ok) {
+        const data = await responseObject.json();
+
+        return {
+            status: responseObject.status,
+            body: data.filter((f) => f.parentTemplateId === formId),
+        };
+    }
+    return { status: responseObject.status, body: null };
+};
+
+export const makeClientGetAllFormsResponseByRespondentId = async (userId) => {
+    const url =
+        process.env.NEXT_PUBLIC_DOTNET_BACKEND_API_BASE_URL +
+        "/api/formresponse/all";
+    const headers = {
+        "Content-Type": "application/json",
+    };
+    const options = {
+        method: "GET",
+        headers: headers,
+        credentials: "include",
+    };
+    const responseObject = await fetch(url, options);
+    if (responseObject.ok) {
+        const data = await responseObject.json();
+
+        return {
+            status: responseObject.status,
+            body: data.filter((f) => f.respondentId === userId),
+        };
+    }
+    return { status: responseObject.status, body: null };
+};
+
+export const makeClientGetAllFormsByUserIdRequest = async (userId) => {
+    const url =
+        process.env.NEXT_PUBLIC_DOTNET_BACKEND_API_BASE_URL + "/api/form/all";
+    const headers = {
+        "Content-Type": "application/json",
+    };
+    const options = {
+        method: "GET",
+        headers: headers,
+        credentials: "include",
+    };
+    const responseObject = await fetch(url, options);
+    if (responseObject.ok) {
+        const data = await responseObject.json();
+
+        return {
+            status: responseObject.status,
+            body: data.filter((f) => f.authorId === userId),
+        };
+    }
+    return { status: responseObject.status, body: null };
+};
+
+export const makeClientUpdateFormResponseByFormResponseIdRequest = async (
+    responseObjectId,
+    data
+) => {
+    const url =
+        process.env.NEXT_PUBLIC_DOTNET_BACKEND_API_BASE_URL +
+        "/api/formresponse/" +
+        responseObjectId;
+    const headers = {
+        "Content-Type": "application/json",
+    };
+    const options = {
+        method: "PUT",
+        headers: headers,
+        body: JSON.stringify(data),
+        credentials: "include",
+    };
+    const responseObject = await fetch(url, options);
+    if (responseObject.ok) {
+        const data = await responseObject.json();
+        return { status: responseObject.status, body: data };
+    }
+    return { status: responseObject.status, body: null };
+};
+
+export const makeClientGetFormResponseByFormResponseIdRequest = async (
+    responseObjectId
+) => {
+    const url =
+        process.env.NEXT_PUBLIC_DOTNET_BACKEND_API_BASE_URL +
+        "/api/formresponse/" +
+        responseObjectId;
+    const headers = {
+        "Content-Type": "application/json",
+    };
+    const options = {
+        method: "GET",
+        headers: headers,
+        credentials: "include",
+    };
+    const responseObject = await fetch(url, options);
+    if (responseObject.ok) {
+        const data = await responseObject.json();
+        return { status: responseObject.status, body: data };
+    }
+    return { status: responseObject.status, body: null };
+};
+
+export const makeClientFormResponseSubmissionRequest = async (data) => {
+    const url =
+        process.env.NEXT_PUBLIC_DOTNET_BACKEND_API_BASE_URL +
+        "/api/formresponse";
+    const headers = {
+        "Content-Type": "application/json",
+    };
+    const options = {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(data),
+        credentials: "include",
+    };
+    const responseObject = await fetch(url, options);
+    if (responseObject.ok) {
+        const data = await responseObject.json();
+        return { status: responseObject.status, body: data };
+    }
+    return { status: responseObject.status, body: null };
+};
+
 export const makeClientUpdateFormByFormIdRequest = async (formId, data) => {
     const url =
         process.env.NEXT_PUBLIC_DOTNET_BACKEND_API_BASE_URL +

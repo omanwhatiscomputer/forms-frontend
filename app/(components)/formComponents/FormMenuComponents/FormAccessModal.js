@@ -3,7 +3,7 @@
 import {
     addAuthorizedUser,
     removeAuthorizedUser,
-    selectFromAuthorizedUsers,
+    selectFormAuthorizedUsers,
     updateFormAccessControl,
 } from "@/lib/features/form/formSlice";
 import { Button, Modal } from "flowbite-react";
@@ -40,7 +40,7 @@ const FormAccessModal = ({
     const authorNormalizedName = useSelector(selectUserFullName);
     const authorId = useSelector(selectUserId);
     const authorizedUsers = useSelector((state) =>
-        selectFromAuthorizedUsers(state, formId)
+        selectFormAuthorizedUsers(state, formId)
     );
 
     const handleRemoveUserFromFormAuthGroup = ({ email }) => {

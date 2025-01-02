@@ -1,5 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
 "use client";
+export const dynamic = "force-dynamic";
 import { useEffect, useState } from "react";
 
 import FormBlock from "@/app/(components)/formComponents/FormBlock";
@@ -16,13 +17,16 @@ import { useParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { Reorder } from "framer-motion";
 import FormBlockDnDItem from "@/app/(components)/formComponents/FormBlockDnDItem";
+import { selectUserId } from "@/lib/features/general/authSlice";
+import { formStyle } from "@/constants/misc";
 
 const CreateForm = () => {
     const { id } = useParams();
 
     const dispatch = useDispatch();
+    const userId = useSelector((state) => selectUserId(state));
     useEffect(() => {
-        dispatch(initializeForm({ id, mode: formMode.create }));
+        dispatch(initializeForm({ id, mode: formMode.create, userId: userId }));
     }, [id, dispatch]);
 
     const formBlocks = useSelector((state) => selectFormBlocks(state, id));
@@ -32,7 +36,7 @@ const CreateForm = () => {
     return (
         <main className="main">
             <FormMenu />
-            <div className="w-full px-5 sm:px-10 md:px-36 lg:px-64 xl:px-96">
+            <div className={`${formStyle}`}>
                 <FormBlock
                     className={"mt-2"}
                     blockId={"metadata"}
