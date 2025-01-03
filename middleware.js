@@ -79,5 +79,6 @@ export const config = {
         "/form/:path*",
         "/myforms/:path*",
         "/response/:path*",
+        "/searchresults",
     ],
 };
