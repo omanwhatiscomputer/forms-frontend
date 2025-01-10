@@ -26,9 +26,19 @@ const BlockResponse = ({
     const respBlock = formResponseBlocks
         ? formResponseBlocks.find((frb) => frb.BlockId === blockId)
         : {};
-    const [value, setValue] = useState(
-        blockType.includes("Multiple") ? [] : ""
-    );
+    const initializeAnswer = () => {
+        if (mode === responseMode.create) {
+            return blockType.includes("Multiple") ? [] : "";
+        } else if (
+            mode === responseMode.readonly ||
+            mode === responseMode.update
+        ) {
+            return blockType.includes("Checkbox")
+                ? JSON.parse(respBlock.Content)
+                : respBlock.Content;
+        }
+    };
+    const [value, setValue] = useState(initializeAnswer());
 
     const handleSingleAnswerCheckBox = (e) => {
         setValue(e.target.checked ? e.target.value : "");
