@@ -12,7 +12,7 @@ const TextArea = ({ value, handleChange, mode, isRequired }) => {
             <textarea
                 {...(mode === responseMode.readonly && { disabled: true })}
                 rows="3"
-                className="w-full"
+                className="w-full bg-background text-foreground"
                 value={value}
                 onChange={(e) => handleChange(e)}
             />

@@ -12,7 +12,7 @@ const TextField = ({ value, handleChange, mode, isRequired }) => {
             <input
                 {...(mode === responseMode.readonly && { disabled: true })}
                 type="text"
-                className="w-full"
+                className="w-full bg-background text-foreground"
                 value={value}
                 onChange={(e) => handleChange(e)}
             />
