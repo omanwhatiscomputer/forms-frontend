@@ -12,6 +12,7 @@ import { formMode } from "@/constants/formMode";
 import { formStyle } from "@/constants/misc";
 import {
     initializeExistingForm,
+    resetForm,
     selectFormBlocks,
 } from "@/lib/features/form/formSlice";
 
@@ -25,6 +26,11 @@ const ViewForm = () => {
 
     const dispatch = useDispatch();
     const { id } = useParams();
+    useEffect(() => {
+        if (id) {
+            return () => dispatch(resetForm(id));
+        }
+    }, [id, dispatch]);
 
     const { theme } = useTheme();
 

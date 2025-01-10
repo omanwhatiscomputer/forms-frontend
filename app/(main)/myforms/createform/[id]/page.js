@@ -11,6 +11,7 @@ import { formMode } from "@/constants/formMode";
 import {
     initializeForm,
     reorderFormBlock,
+    resetForm,
     selectFormBlocks,
 } from "@/lib/features/form/formSlice";
 import { useParams } from "next/navigation";
@@ -24,6 +25,12 @@ const CreateForm = () => {
     const { id } = useParams();
 
     const dispatch = useDispatch();
+    useEffect(() => {
+        if (id) {
+            return () => dispatch(resetForm(id));
+        }
+    }, [id, dispatch]);
+
     const userId = useSelector((state) => selectUserId(state));
     useEffect(() => {
         dispatch(initializeForm({ id, mode: formMode.create, userId: userId }));

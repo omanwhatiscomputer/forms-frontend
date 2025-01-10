@@ -9,6 +9,7 @@ import { Reorder } from "framer-motion";
 import {
     initializeExistingForm,
     reorderFormBlock,
+    resetForm,
     selectFormBlocks,
 } from "@/lib/features/form/formSlice";
 import FormBlock from "@/app/(components)/formComponents/FormBlock";
@@ -23,6 +24,11 @@ const UpdateForm = () => {
     const { id } = useParams();
     const { theme } = useTheme();
     const dispatch = useDispatch();
+    useEffect(() => {
+        if (id) {
+            return () => dispatch(resetForm(id));
+        }
+    }, [id, dispatch]);
     useEffect(() => {
         dispatch(
             initializeExistingForm({
