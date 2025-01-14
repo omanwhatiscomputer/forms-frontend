@@ -18,7 +18,7 @@ const FormTagBadge = ({ tagName, formId }) => {
     };
     return (
         <Badge className="mr-2" color="gray">
-            <div className="flex items-center p-1">
+            <div className="flex items-center p-1 border-l-[6px] border-primary">
                 {tagName}
 
                 {mode !== formMode.readonly && mode !== formMode.respond && (
