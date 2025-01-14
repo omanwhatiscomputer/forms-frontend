@@ -1,7 +1,10 @@
 /* eslint-disable react/react-in-jsx-scope */
 "use client";
 
-import { selectUserIsSignedIn } from "@/lib/features/general/authSlice";
+import {
+    selectUserId,
+    selectUserIsSignedIn,
+} from "@/lib/features/general/authSlice";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { makeClientGetAllFormsRequest } from "./utils/client.api.utils";
@@ -11,11 +14,13 @@ import { v4 } from "uuid";
 
 export default function Home() {
     const isSignedIn = useSelector((state) => selectUserIsSignedIn(state));
+    const userId = useSelector((state) => selectUserId(state));
     const [forms, setForms] = useState([]);
     useEffect(() => {
         const getForms = async () => {
             const res = await makeClientGetAllFormsRequest();
-            setForms(res.body);
+
+            setForms(res.body.filter((i) => i.authorId !== userId));
         };
         getForms();
     }, []);
