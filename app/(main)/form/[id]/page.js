@@ -47,7 +47,7 @@ const ViewForm = () => {
             );
         };
         fetchForm();
-    }, []);
+    }, [id, theme, dispatch]);
 
     return (
         <main className="main">

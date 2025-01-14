@@ -37,7 +37,7 @@ const UpdateForm = () => {
                 mode: formMode.update,
             })
         );
-    }, []);
+    }, [id, dispatch]);
     const formBlocks = useSelector((state) => selectFormBlocks(state, id));
     const [activeBlock, setActiveBlock] = useState(null);
     return (

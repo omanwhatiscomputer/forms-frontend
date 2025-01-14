@@ -36,7 +36,7 @@ const UpdateFormResponse = () => {
         if (id) {
             return () => dispatch(resetForm(id));
         }
-    }, [id, dispatch]);
+    }, [id, responseId, dispatch]);
 
     const { theme } = useTheme();
     const formBlocks = useSelector((state) => selectFormBlocks(state, id));
@@ -54,7 +54,7 @@ const UpdateFormResponse = () => {
             );
         };
         fetchForm();
-    }, []);
+    }, [id, dispatch, responseId]);
 
     useEffect(() => {
         const initExistingFormResponseObject = async () => {
@@ -69,7 +69,7 @@ const UpdateFormResponse = () => {
         if (formBlocks.length > 0) {
             initExistingFormResponseObject();
         }
-    }, [formBlocks]);
+    }, [formBlocks, id, dispatch, responseId]);
 
     return (
         <main className="main">

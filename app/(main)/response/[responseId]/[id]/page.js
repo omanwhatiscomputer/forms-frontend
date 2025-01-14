@@ -37,7 +37,7 @@ const ReadFormResponse = () => {
         if (id) {
             return () => dispatch(resetForm(id));
         }
-    }, [id, dispatch]);
+    }, [id, dispatch, responseId]);
 
     const { theme } = useTheme();
     const formBlocks = useSelector((state) => selectFormBlocks(state, id));
@@ -55,7 +55,7 @@ const ReadFormResponse = () => {
             );
         };
         fetchForm();
-    }, []);
+    }, [id, dispatch, responseId]);
 
     useEffect(() => {
         const initExistingFormResponseObject = async () => {

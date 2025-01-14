@@ -57,7 +57,7 @@ const RespondToForm = () => {
             );
         };
         fetchForm();
-    }, []);
+    }, [id, theme, dispatch]);
 
     useEffect(() => {
         const initFormResponseObject = async () => {
@@ -77,7 +77,7 @@ const RespondToForm = () => {
         if (formBlocks.length > 0) {
             initFormResponseObject();
         }
-    }, [formBlocks]);
+    }, [formBlocks, id, dispatch]);
 
     return (
         <main className="main">
