@@ -24,7 +24,7 @@ const FormHeader = () => {
     const form = useSelector((state) => selectForm(state, id));
 
     return (
-        <div>
+        <div className="mt-8">
             <input
                 {...((mode === formMode.readonly ||
                     mode === formMode.respond) && { disabled: true })}
