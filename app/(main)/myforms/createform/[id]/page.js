@@ -27,7 +27,7 @@ const CreateForm = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         if (id) {
-            return () => dispatch(resetForm(id));
+            return () => dispatch(resetForm({ id: id }));
         }
     }, [id, dispatch]);
 

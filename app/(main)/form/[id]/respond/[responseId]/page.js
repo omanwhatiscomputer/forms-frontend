@@ -35,7 +35,7 @@ const RespondToForm = () => {
     const { responseId, id } = useParams();
     useEffect(() => {
         if (id) {
-            return () => dispatch(resetForm(id));
+            return () => dispatch(resetForm({ id }));
         }
     }, [id, dispatch]);
 
@@ -48,6 +48,7 @@ const RespondToForm = () => {
     const userId = useSelector((state) => selectUserId(state));
     useEffect(() => {
         const fetchForm = async () => {
+            await dispatch(resetForm({ id }));
             await dispatch(
                 initializeExistingForm({
                     formId: id,

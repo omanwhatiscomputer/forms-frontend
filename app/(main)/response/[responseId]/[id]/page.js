@@ -35,7 +35,7 @@ const ReadFormResponse = () => {
     const { responseId, id } = useParams();
     useEffect(() => {
         if (id) {
-            return () => dispatch(resetForm(id));
+            return () => dispatch(resetForm({ id }));
         }
     }, [id, dispatch, responseId]);
 
@@ -59,6 +59,7 @@ const ReadFormResponse = () => {
 
     useEffect(() => {
         const initExistingFormResponseObject = async () => {
+            await dispatch(resetForm({ id }));
             await dispatch(
                 initializeExistingResponseObject({
                     responseObjectId: responseId,

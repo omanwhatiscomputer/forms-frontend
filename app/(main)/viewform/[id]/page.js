@@ -32,8 +32,14 @@ const ViewForm = () => {
     const formBlocks = useSelector((state) => selectFormBlocks(state, id));
 
     useEffect(() => {
+        if (id) {
+            return () => dispatch(resetForm({ id: id }));
+        }
+    }, [id, dispatch]);
+
+    useEffect(() => {
         const fetchForm = async () => {
-            await dispatch(resetForm(id));
+            await dispatch(resetForm({ id: id }));
             await dispatch(
                 initializeExistingForm({
                     formId: id,

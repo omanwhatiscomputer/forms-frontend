@@ -26,17 +26,21 @@ const UpdateForm = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         if (id) {
-            return () => dispatch(resetForm(id));
+            return () => dispatch(resetForm({ id: id }));
         }
     }, [id, dispatch]);
     useEffect(() => {
-        dispatch(
-            initializeExistingForm({
-                formId: id,
-                theme: theme,
-                mode: formMode.update,
-            })
-        );
+        const init = async () => {
+            await dispatch(resetForm({ id: id }));
+            await dispatch(
+                initializeExistingForm({
+                    formId: id,
+                    theme: theme,
+                    mode: formMode.update,
+                })
+            );
+        };
+        init();
     }, [id, dispatch]);
     const formBlocks = useSelector((state) => selectFormBlocks(state, id));
     const [activeBlock, setActiveBlock] = useState(null);

@@ -28,7 +28,7 @@ const ViewForm = () => {
     const { id } = useParams();
     useEffect(() => {
         if (id) {
-            return () => dispatch(resetForm(id));
+            return () => dispatch(resetForm({ id }));
         }
     }, [id, dispatch]);
 
@@ -38,6 +38,7 @@ const ViewForm = () => {
 
     useEffect(() => {
         const fetchForm = async () => {
+            await dispatch(resetForm({ id }));
             await dispatch(
                 initializeExistingForm({
                     formId: id,
