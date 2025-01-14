@@ -12,6 +12,7 @@ import { formMode } from "@/constants/formMode";
 import { formStyle } from "@/constants/misc";
 import {
     initializeExistingForm,
+    resetForm,
     selectFormBlocks,
 } from "@/lib/features/form/formSlice";
 
@@ -32,6 +33,7 @@ const ViewForm = () => {
 
     useEffect(() => {
         const fetchForm = async () => {
+            await dispatch(resetForm(id));
             await dispatch(
                 initializeExistingForm({
                     formId: id,
@@ -41,7 +43,7 @@ const ViewForm = () => {
             );
         };
         fetchForm();
-    }, []);
+    }, [id, dispatch]);
 
     return (
         <main className="main">
