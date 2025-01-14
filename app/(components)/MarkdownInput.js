@@ -139,7 +139,7 @@ const MarkdownInput = ({ placeholder, className, action, value, formId }) => {
                 className={`${editorStyle} ${
                     (mode === formMode.readonly || mode === formMode.respond) &&
                     "hidden"
-                }`}
+                } w-full bg-background text-foreground`}
                 type="text"
                 rows="3"
                 value={value}
@@ -149,7 +149,10 @@ const MarkdownInput = ({ placeholder, className, action, value, formId }) => {
                 placeholder="Enter form description"
             />
 
-            <Markdown remarkPlugins={[remarkGfm]} className={editorStyle}>
+            <Markdown
+                remarkPlugins={[remarkGfm]}
+                className={`${editorStyle} mt-4`}
+            >
                 {value}
             </Markdown>
         </div>
