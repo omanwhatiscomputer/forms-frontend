@@ -2,12 +2,6 @@ import { v4 as uuidv4 } from "uuid";
 
 import { responseMode } from "./responseMode";
 
-export const markdownDefault = [
-    {
-        type: "paragraph",
-        children: [{ text: "" }],
-    },
-];
 export const richtextDefault = [
     {
         type: "paragraph",
@@ -83,7 +77,7 @@ export const defaultValue = {
         AuthorId: userId,
         AuthorizedUsers: [],
         Tags: [],
-        Description: markdownDefault,
+        Description: "",
         Topic: "Education",
         BannerUrl: "https://fakeimg.pl/600x400/f0cece/909090?font=lobster",
         AccessControl: "Private",
