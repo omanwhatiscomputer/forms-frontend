@@ -27,14 +27,14 @@ const MarkdownInput = ({ placeholder, className, action, value, formId }) => {
     const dispatch = useDispatch();
     const mode = useSelector((state) => selectFormMode(state, formId));
 
-    const editorStyle = `p-2 pl-4 border-foreground focus:border-primary focus:ring-0 focus:outline-none ${className}`;
+    const editorStyle = `p-2 pl-4 border-foreground focus:border-primary focus:ring-0 focus:outline-none`;
     return (
         <div>
             <textarea
                 className={`${editorStyle} ${
                     (mode === formMode.readonly || mode === formMode.respond) &&
                     "hidden"
-                } w-full bg-background text-foreground`}
+                } w-full bg-background text-foreground border-[1px]`}
                 type="text"
                 rows="3"
                 value={value}
@@ -46,7 +46,7 @@ const MarkdownInput = ({ placeholder, className, action, value, formId }) => {
 
             <Markdown
                 remarkPlugins={[remarkGfm]}
-                className={`${editorStyle} mt-8`}
+                className={`${editorStyle} ${className} mt-8`}
             >
                 {value}
             </Markdown>
