@@ -137,7 +137,7 @@ const MarkdownInput = ({ placeholder, className, action, value, formId }) => {
         <div>
             <textarea
                 className={`${editorStyle} ${
-                    (mode !== formMode.readonly || mode !== formMode.respond) &&
+                    (mode === formMode.readonly || mode === formMode.respond) &&
                     "hidden"
                 }`}
                 type="text"
