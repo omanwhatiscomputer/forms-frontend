@@ -121,6 +121,7 @@ export const defaultValue = {
         ResponseObjectId: responseId,
         BlockId: blockId,
         Errors: errors,
+        ShowError: false,
     }),
     newFormResponseValidationObject: (
         formId,

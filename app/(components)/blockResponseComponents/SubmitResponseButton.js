@@ -7,6 +7,7 @@ import {
     selectFormResponseValidationObjectbyFormResponseId,
     selectResponseMode,
     submitResponse,
+    toggleValidationErrorForAllBlocks,
     updateResponse,
 } from "@/lib/features/form/responseSlice";
 import { useTheme } from "next-themes";
@@ -36,6 +37,12 @@ const SubmitResponseButton = () => {
                 0
             );
         if (numErrors > 0) {
+            dispatch(
+                toggleValidationErrorForAllBlocks({
+                    id: responseId,
+                    value: true,
+                })
+            );
             emitMessage(
                 `Error(s) detected in ${numErrors} input field(s). Please check your responses and try again.`
             );

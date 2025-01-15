@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     selectBlockResponseValidationByFormResponseIdBlockId,
     selectResponseMode,
+    toggleValidationErrorByBlockId,
     updateBlockResponseAnswerByBlockId,
 } from "@/lib/features/form/responseSlice";
 import TextArea from "./blockResponseComponents/TextArea";
@@ -35,8 +36,6 @@ const BlockResponse = ({
         )
     );
 
-    const [showError, setShowError] = useState(false);
-
     const initializeAnswer = () => {
         if (mode === responseMode.create) {
             return blockType.includes("Multiple") ? [] : "";
@@ -52,11 +51,24 @@ const BlockResponse = ({
     const [value, setValue] = useState(initializeAnswer());
 
     const handleSingleAnswerCheckBox = (e) => {
-        value.length === 0 && setShowError(false);
+        value.length === 0 &&
+            dispatch(
+                toggleValidationErrorByBlockId({
+                    id: responseId,
+                    blockId: blockId,
+                    value: false,
+                })
+            );
         setValue(e.target.checked ? e.target.value : "");
     };
     const handleMultipleAnswersCheckBox = (e) => {
-        setShowError(false);
+        dispatch(
+            toggleValidationErrorByBlockId({
+                id: responseId,
+                blockId: blockId,
+                value: false,
+            })
+        );
         setValue((prev) => {
             const newVal = [...prev];
             if (prev.includes(e.target.value)) {
@@ -69,7 +81,14 @@ const BlockResponse = ({
         });
     };
     const handleTextInput = (e) => {
-        e.target.value.length > 0 && setShowError(false);
+        e.target.value.length > 0 &&
+            dispatch(
+                toggleValidationErrorByBlockId({
+                    id: responseId,
+                    blockId: blockId,
+                    value: false,
+                })
+            );
         setValue(e.target.value);
     };
 
@@ -151,11 +170,12 @@ const BlockResponse = ({
         <div>
             <SectionDivider content={"Your Answer:"} />
             {renderInputField()}
-            {showError && blockResponseValidationObject.Errors.length > 0 && (
-                <div className="pl-4 p-2 opacity-50 font-semibold bg-primary text-white w-full">
-                    {blockResponseValidationObject.Errors[0]}
-                </div>
-            )}
+            {blockResponseValidationObject.ShowError &&
+                blockResponseValidationObject.Errors.length > 0 && (
+                    <div className="pl-4 p-2 opacity-50 font-semibold bg-primary text-white w-full">
+                        {blockResponseValidationObject.Errors[0]}
+                    </div>
+                )}
         </div>
     );
 };
