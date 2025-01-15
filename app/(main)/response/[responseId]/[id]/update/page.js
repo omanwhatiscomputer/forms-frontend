@@ -20,6 +20,7 @@ import {
 } from "@/lib/features/form/formSlice";
 import {
     initializeExistingResponseObject,
+    initializeFormResponseValidationObject,
     resetFormResponseObject,
     resetFormResponseValidationObject,
     selectFormResponseBlocks,
@@ -70,6 +71,13 @@ const UpdateFormResponse = () => {
                     responseObjectId: responseId,
                     mode: responseMode.update,
                     theme: theme,
+                })
+            );
+            await dispatch(
+                initializeFormResponseValidationObject({
+                    id: responseId,
+                    formId: id,
+                    blockResponses: formResponseBlocks,
                 })
             );
         };

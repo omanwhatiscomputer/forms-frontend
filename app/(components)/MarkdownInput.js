@@ -48,7 +48,7 @@ const MarkdownInput = ({ placeholder, className, action, value, formId }) => {
                 remarkPlugins={[remarkGfm]}
                 className={`${editorStyle} ${className} mt-8`}
             >
-                {value}
+                {typeof value !== "string" ? JSON.stringify(value) : value}
             </Markdown>
         </div>
     );

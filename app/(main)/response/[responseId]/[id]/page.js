@@ -21,6 +21,7 @@ import {
 } from "@/lib/features/form/formSlice";
 import {
     initializeExistingResponseObject,
+    initializeFormResponseValidationObject,
     resetFormResponseObject,
     resetFormResponseValidationObject,
     selectFormResponseBlocks,
@@ -52,6 +53,7 @@ const ReadFormResponse = () => {
     );
     useEffect(() => {
         const fetchForm = async () => {
+            await dispatch(resetForm({ id }));
             await dispatch(
                 initializeExistingForm({
                     formId: id,
@@ -65,12 +67,18 @@ const ReadFormResponse = () => {
 
     useEffect(() => {
         const initExistingFormResponseObject = async () => {
-            await dispatch(resetForm({ id }));
             await dispatch(
                 initializeExistingResponseObject({
                     responseObjectId: responseId,
                     mode: responseMode.readonly,
                     theme: theme,
+                })
+            );
+            await dispatch(
+                initializeFormResponseValidationObject({
+                    id: responseId,
+                    formId: id,
+                    blockResponses: formResponseBlocks,
                 })
             );
         };
