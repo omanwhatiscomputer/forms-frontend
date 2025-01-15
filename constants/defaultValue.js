@@ -115,4 +115,22 @@ export const defaultValue = {
         BlockResponses: blockResponses,
         mode: mode,
     }),
+    newBlockResponseValidation: (formId, blockId, responseId, errors) => ({
+        Id: uuidv4(),
+        ParentTemplateId: formId,
+        ResponseObjectId: responseId,
+        BlockId: blockId,
+        Errors: errors,
+    }),
+    newFormResponseValidationObject: (
+        formId,
+        responseId,
+        blockResponseValidationObjects
+    ) => ({
+        Id: uuidv4(),
+        ParentTemplateId: formId,
+        ResponseObjectId: responseId,
+        BlockResponseValidationObjects: blockResponseValidationObjects,
+        ReadyForSubmission: false,
+    }),
 };

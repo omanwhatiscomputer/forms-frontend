@@ -19,6 +19,8 @@ import {
 } from "@/lib/features/form/formSlice";
 import {
     initializeFormResponse,
+    resetFormResponseObject,
+    resetFormResponseValidationObject,
     selectFormResponseBlocks,
 } from "@/lib/features/form/responseSlice";
 import { selectUserId } from "@/lib/features/general/authSlice";
@@ -35,9 +37,13 @@ const RespondToForm = () => {
     const { responseId, id } = useParams();
     useEffect(() => {
         if (id) {
-            return () => dispatch(resetForm({ id }));
+            return () => {
+                dispatch(resetForm({ id }));
+                dispatch(resetFormResponseObject({ id: responseId }));
+                dispatch(resetFormResponseValidationObject({ id: responseId }));
+            };
         }
-    }, [id, dispatch]);
+    }, [id, responseId, dispatch]);
 
     const { theme } = useTheme();
 

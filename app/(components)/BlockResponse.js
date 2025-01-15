@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import SectionDivider from "./common/SectionDivider";
 import { useDispatch, useSelector } from "react-redux";
 import {
+    selectBlockResponseValidationByFormResponseIdBlockId,
     selectResponseMode,
     updateBlockResponseAnswerByBlockId,
 } from "@/lib/features/form/responseSlice";
@@ -26,6 +27,16 @@ const BlockResponse = ({
     const respBlock = formResponseBlocks
         ? formResponseBlocks.find((frb) => frb.BlockId === blockId)
         : {};
+    const blockResponseValidationObject = useSelector((state) =>
+        selectBlockResponseValidationByFormResponseIdBlockId(
+            state,
+            responseId,
+            blockId
+        )
+    );
+
+    const [showError, setShowError] = useState(false);
+
     const initializeAnswer = () => {
         if (mode === responseMode.create) {
             return blockType.includes("Multiple") ? [] : "";
@@ -41,9 +52,11 @@ const BlockResponse = ({
     const [value, setValue] = useState(initializeAnswer());
 
     const handleSingleAnswerCheckBox = (e) => {
+        value.length === 0 && setShowError(false);
         setValue(e.target.checked ? e.target.value : "");
     };
     const handleMultipleAnswersCheckBox = (e) => {
+        setShowError(false);
         setValue((prev) => {
             const newVal = [...prev];
             if (prev.includes(e.target.value)) {
@@ -56,6 +69,7 @@ const BlockResponse = ({
         });
     };
     const handleTextInput = (e) => {
+        e.target.value.length > 0 && setShowError(false);
         setValue(e.target.value);
     };
 
@@ -136,8 +150,12 @@ const BlockResponse = ({
     return (
         <div>
             <SectionDivider content={"Your Answer:"} />
-            {/* {JSON.stringify(respBlock)} */}
             {renderInputField()}
+            {showError && blockResponseValidationObject.Errors.length > 0 && (
+                <div className="pl-4 p-2 opacity-50 font-semibold bg-primary text-white w-full">
+                    {blockResponseValidationObject.Errors[0]}
+                </div>
+            )}
         </div>
     );
 };
