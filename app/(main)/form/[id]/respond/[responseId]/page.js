@@ -34,6 +34,7 @@ import { useDispatch, useSelector } from "react-redux";
 const RespondToForm = () => {
     const [activeBlock, setActiveBlock] = useState(null);
     const [isInitialized, setIsInitialized] = useState(false);
+    const [isInitializedFRBV, setIsInitializedFRBV] = useState(false);
 
     const dispatch = useDispatch();
     const { responseId, id } = useParams();
@@ -85,7 +86,9 @@ const RespondToForm = () => {
                     })
                 );
             }
-            if (formResponseBlocks.length > 0) {
+
+            if (!isInitializedFRBV && formResponseBlocks.length > 0) {
+                setIsInitializedFRBV(true);
                 await dispatch(
                     initializeFormResponseValidationObject({
                         id: responseId,

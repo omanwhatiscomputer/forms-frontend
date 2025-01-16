@@ -33,6 +33,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 const ReadFormResponse = () => {
     const [activeBlock, setActiveBlock] = useState(null);
+    const [isInitializedFRBV, setIsInitializedFRBV] = useState(false);
+    const [isInitialized, setIsInitialized] = useState(false);
 
     const dispatch = useDispatch();
     const { responseId, id } = useParams();
@@ -67,20 +69,26 @@ const ReadFormResponse = () => {
 
     useEffect(() => {
         const initExistingFormResponseObject = async () => {
-            await dispatch(
-                initializeExistingResponseObject({
-                    responseObjectId: responseId,
-                    mode: responseMode.readonly,
-                    theme: theme,
-                })
-            );
-            await dispatch(
-                initializeFormResponseValidationObject({
-                    id: responseId,
-                    formId: id,
-                    blockResponses: formResponseBlocks,
-                })
-            );
+            if (!isInitialized) {
+                setIsInitialized(true);
+                await dispatch(
+                    initializeExistingResponseObject({
+                        responseObjectId: responseId,
+                        mode: responseMode.readonly,
+                        theme: theme,
+                    })
+                );
+            }
+            if (!isInitializedFRBV && formResponseBlocks.length > 0) {
+                setIsInitializedFRBV(true);
+                await dispatch(
+                    initializeFormResponseValidationObject({
+                        id: responseId,
+                        formId: id,
+                        blockResponses: formResponseBlocks,
+                    })
+                );
+            }
         };
         if (formBlocks.length > 0) {
             initExistingFormResponseObject();

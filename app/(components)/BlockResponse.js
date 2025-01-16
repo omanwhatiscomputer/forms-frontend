@@ -101,18 +101,16 @@ const BlockResponse = ({
             (mode === responseMode.update || mode === responseMode.readonly)
         ) {
             setValue(JSON.parse(respBlock.Content));
-        } else if (
-            respBlock &&
-            Object.keys(respBlock).length !== 0 &&
-            typeof mode === "string"
-        ) {
-            setValue(initializeAnswer());
         }
     }, [respBlock, mode]);
 
     useEffect(() => {
         // console.log("value", value, respBlock && respBlock.length);
-        if (respBlock && Object.keys(respBlock).length !== 0) {
+        if (
+            respBlock &&
+            Object.keys(respBlock).length !== 0 &&
+            (mode === responseMode.create || mode === responseMode.update)
+        ) {
             dispatch(
                 updateBlockResponseAnswerByBlockId({
                     id: responseId,
