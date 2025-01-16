@@ -32,6 +32,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 const UpdateFormResponse = () => {
     const [activeBlock, setActiveBlock] = useState(null);
+    const [isInitialized, setIsInitialized] = useState(false);
+    const [isInitializedFRBV, setIsInitializedFRBV] = useState(false);
 
     const dispatch = useDispatch();
     const { responseId, id } = useParams();
@@ -66,25 +68,31 @@ const UpdateFormResponse = () => {
 
     useEffect(() => {
         const initExistingFormResponseObject = async () => {
-            await dispatch(
-                initializeExistingResponseObject({
-                    responseObjectId: responseId,
-                    mode: responseMode.update,
-                    theme: theme,
-                })
-            );
-            await dispatch(
-                initializeFormResponseValidationObject({
-                    id: responseId,
-                    formId: id,
-                    blockResponses: formResponseBlocks,
-                })
-            );
+            if (!isInitialized) {
+                setIsInitialized(true);
+                await dispatch(
+                    initializeExistingResponseObject({
+                        responseObjectId: responseId,
+                        mode: responseMode.update,
+                        theme: theme,
+                    })
+                );
+            }
+            if (!isInitializedFRBV && formResponseBlocks.length > 0) {
+                setIsInitializedFRBV(true);
+                await dispatch(
+                    initializeFormResponseValidationObject({
+                        id: responseId,
+                        formId: id,
+                        blockResponses: formResponseBlocks,
+                    })
+                );
+            }
         };
         if (formBlocks.length > 0) {
             initExistingFormResponseObject();
         }
-    }, [formBlocks, id, dispatch, responseId]);
+    }, [formBlocks, id, dispatch, formResponseBlocks]);
 
     return (
         <main className="main">
