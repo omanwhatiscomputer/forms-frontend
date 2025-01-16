@@ -33,6 +33,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const RespondToForm = () => {
     const [activeBlock, setActiveBlock] = useState(null);
+    const [isInitialized, setIsInitialized] = useState(false);
 
     const dispatch = useDispatch();
     const { responseId, id } = useParams();
@@ -69,30 +70,35 @@ const RespondToForm = () => {
 
     useEffect(() => {
         const initFormResponseObject = async () => {
-            await dispatch(
-                initializeFormResponse({
-                    blocks: formBlocks.map((b) => ({
-                        blockId: b.Id,
-                        blockType: b.BlockType,
-                        isRequired: b.IsRequired,
-                    })),
-                    formId: id,
-                    id: responseId,
-                    userId: userId,
-                })
-            );
-            await dispatch(
-                initializeFormResponseValidationObject({
-                    id: responseId,
-                    formId: id,
-                    blockResponses: formResponseBlocks,
-                })
-            );
+            if (!isInitialized) {
+                setIsInitialized(true);
+                await dispatch(
+                    initializeFormResponse({
+                        blocks: formBlocks.map((b) => ({
+                            blockId: b.Id,
+                            blockType: b.BlockType,
+                            isRequired: b.IsRequired,
+                        })),
+                        formId: id,
+                        id: responseId,
+                        userId: userId,
+                    })
+                );
+            }
+            if (formResponseBlocks.length > 0) {
+                await dispatch(
+                    initializeFormResponseValidationObject({
+                        id: responseId,
+                        formId: id,
+                        blockResponses: formResponseBlocks,
+                    })
+                );
+            }
         };
         if (formBlocks.length > 0) {
             initFormResponseObject();
         }
-    }, [formBlocks, id, dispatch]);
+    }, [formBlocks, formResponseBlocks, id, dispatch]);
 
     return (
         <main className="main">

@@ -44,7 +44,8 @@ const SubmitResponseButton = () => {
                 })
             );
             emitMessage(
-                `Error(s) detected in ${numErrors} input field(s). Please check your responses and try again.`
+                `Error(s) detected in ${numErrors} input field(s). Please check your responses and try again.`,
+                "error"
             );
             return;
         }

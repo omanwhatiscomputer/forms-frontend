@@ -46,6 +46,8 @@ const BlockResponse = ({
             return blockType.includes("Checkbox")
                 ? JSON.parse(respBlock.Content)
                 : respBlock.Content;
+        } else {
+            return "";
         }
     };
     const [value, setValue] = useState(initializeAnswer());
@@ -99,10 +101,18 @@ const BlockResponse = ({
             (mode === responseMode.update || mode === responseMode.readonly)
         ) {
             setValue(JSON.parse(respBlock.Content));
+        } else if (
+            respBlock &&
+            Object.keys(respBlock).length !== 0 &&
+            typeof mode === "string"
+        ) {
+            setValue(initializeAnswer());
         }
-    }, [respBlock]);
+    }, [respBlock, mode]);
+
     useEffect(() => {
-        if (respBlock) {
+        // console.log("value", value, respBlock && respBlock.length);
+        if (respBlock && Object.keys(respBlock).length !== 0) {
             dispatch(
                 updateBlockResponseAnswerByBlockId({
                     id: responseId,
@@ -111,12 +121,13 @@ const BlockResponse = ({
                 })
             );
         }
-    }, [value]);
+    }, [JSON.stringify(value)]);
+
     const renderInputField = () => {
         switch (blockType) {
             case "Single-line":
                 return (
-                    <TextArea
+                    <TextField
                         {...(respBlock && { isRequired: respBlock.IsRequired })}
                         value={value}
                         handleChange={handleTextInput}
@@ -125,7 +136,7 @@ const BlockResponse = ({
                 );
             case "Multi-line":
                 return (
-                    <TextField
+                    <TextArea
                         {...(respBlock && { isRequired: respBlock.IsRequired })}
                         value={value}
                         handleChange={handleTextInput}
@@ -169,7 +180,7 @@ const BlockResponse = ({
     return (
         <div>
             <SectionDivider content={"Your Answer:"} />
-            {renderInputField()}
+            {typeof mode === "string" && renderInputField()}
             {blockResponseValidationObject.ShowError &&
                 blockResponseValidationObject.Errors.length > 0 && (
                     <div className="pl-4 p-2 opacity-50 font-semibold bg-primary text-white w-full">
