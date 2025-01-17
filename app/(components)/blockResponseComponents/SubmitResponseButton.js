@@ -14,8 +14,10 @@ import { useTheme } from "next-themes";
 import { useParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { emitMessage } from "../NotificationToaster";
+import { useRouter } from "next/navigation";
 
 const SubmitResponseButton = () => {
+    const router = useRouter();
     const { responseId } = useParams();
     const dispatch = useDispatch();
     const { theme } = useTheme();
@@ -52,9 +54,13 @@ const SubmitResponseButton = () => {
 
         // submit or update
         if (mode === responseMode.create) {
-            dispatch(submitResponse({ responseObject: formResponse, theme }));
+            dispatch(
+                submitResponse({ responseObject: formResponse, theme, router })
+            );
         } else if (mode === responseMode.update) {
-            dispatch(updateResponse({ responseObject: formResponse, theme }));
+            dispatch(
+                updateResponse({ responseObject: formResponse, theme, router })
+            );
         }
     };
     return (

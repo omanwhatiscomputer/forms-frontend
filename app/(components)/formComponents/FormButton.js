@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { questionType } from "@/constants/questionType";
 import { useTheme } from "next-themes";
 import { selectUserId } from "@/lib/features/general/authSlice";
+import { useRouter } from "next/navigation";
 
 const FormButton = ({
     form,
@@ -21,6 +22,7 @@ const FormButton = ({
     action,
     formId,
 }) => {
+    const router = useRouter();
     const dispatch = useDispatch();
     const [openModal, setOpenModal] = useState(false);
     const { theme } = useTheme();
@@ -55,6 +57,7 @@ const FormButton = ({
                                       theme: theme,
                                       form: form,
                                       userId: userId,
+                                      router: router,
                                   })
                               ),
                       })}
