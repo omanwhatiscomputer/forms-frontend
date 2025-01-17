@@ -94,7 +94,7 @@ export const makeClientGetAllFormsResponseByFormIdRequest = async (formId) => {
 export const makeClientGetAllFormsResponseByRespondentId = async (userId) => {
     const url =
         process.env.NEXT_PUBLIC_DOTNET_BACKEND_API_BASE_URL +
-        "/api/formresponse/all";
+        `/api/formresponse/alluserresponses/${userId}`;
     const headers = {
         "Content-Type": "application/json",
     };
@@ -109,7 +109,7 @@ export const makeClientGetAllFormsResponseByRespondentId = async (userId) => {
 
         return {
             status: responseObject.status,
-            body: data.filter((f) => f.respondentId === userId),
+            body: data,
         };
     }
     return { status: responseObject.status, body: null };

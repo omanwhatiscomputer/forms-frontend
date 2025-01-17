@@ -16,6 +16,7 @@ const MyResponses = () => {
             const res = await makeClientGetAllFormsResponseByRespondentId(
                 userId
             );
+
             setForms(res.body);
         };
         getForms();
@@ -39,7 +40,7 @@ const MyResponses = () => {
                 </Link>
             </div>
             <br />
-            {forms.length > 0 && (
+            {forms && forms.length > 0 && (
                 <div className="mt-4 mx-6">
                     {forms.map((f) => (
                         <div
