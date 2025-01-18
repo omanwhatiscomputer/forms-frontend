@@ -7,7 +7,10 @@ import {
 } from "@/lib/features/general/authSlice";
 import Link from "next/link";
 import { useSelector } from "react-redux";
-import { makeClientGetAllFormsRequest } from "./utils/client.api.utils";
+import {
+    makeClientGetAllFormsRequest,
+    makeClientGetAllFormsResponseByRespondentId,
+} from "./utils/client.api.utils";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { v4 } from "uuid";
@@ -20,10 +23,30 @@ export default function Home() {
         const getForms = async () => {
             const res = await makeClientGetAllFormsRequest();
 
-            setForms(res.body.filter((i) => i.authorId !== userId));
+            if (isSignedIn) {
+                const formResponseObjs =
+                    await makeClientGetAllFormsResponseByRespondentId(userId);
+
+                if (formResponseObjs && formResponseObjs.body.length > 0) {
+                    setForms(
+                        res.body
+                            .filter((i) => i.authorId !== userId)
+                            .map((f) => ({
+                                ...f,
+                                hasResponded: formResponseObjs.body
+                                    .map((fro) => fro.parentTemplateId)
+                                    .includes(f.formTemplateId),
+                            }))
+                    );
+                } else {
+                    setForms(res.body.filter((i) => i.authorId !== userId));
+                }
+            } else {
+                setForms(res.body.filter((i) => i.authorId !== userId));
+            }
         };
         getForms();
-    }, []);
+    }, [isSignedIn]);
     const router = useRouter();
     return (
         <main className="main">
@@ -68,7 +91,7 @@ export default function Home() {
                                 >
                                     View
                                 </button>
-                                {isSignedIn && (
+                                {isSignedIn && !f.hasResponded && (
                                     <button
                                         onClick={async () => {
                                             await router.push(
