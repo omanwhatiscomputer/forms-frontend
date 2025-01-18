@@ -67,7 +67,7 @@ const RespondToForm = () => {
             );
         };
         fetchForm();
-    }, [id, theme, dispatch]);
+    }, [id, dispatch]);
 
     useEffect(() => {
         const initFormResponseObject = async () => {
