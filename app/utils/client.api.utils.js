@@ -2,6 +2,153 @@ import { formTopics } from "@/constants/formTopics";
 import { emitMessage } from "../(components)/NotificationToaster";
 import { parseBodyFromResponseObjectBodyAsReadStream } from "./client.utils";
 
+export const makeClientGetAllPublicFormTemplatesRequest = async () => {
+    const url =
+        process.env.NEXT_PUBLIC_DOTNET_BACKEND_API_BASE_URL +
+        "/api/form/public";
+    const headers = {
+        "Content-Type": "application/json",
+    };
+    const options = {
+        method: "GET",
+        headers: headers,
+        credentials: "include",
+    };
+    const responseObject = await fetch(url, options);
+    if (responseObject.ok) {
+        const data = await responseObject.json();
+
+        return {
+            status: responseObject.status,
+            body: data,
+        };
+    }
+    return { status: responseObject.status, body: null };
+};
+export const makeClientGetAllPrivateFormTemplatesRequest = async () => {
+    const url =
+        process.env.NEXT_PUBLIC_DOTNET_BACKEND_API_BASE_URL +
+        "/api/form/private";
+    const headers = {
+        "Content-Type": "application/json",
+    };
+    const options = {
+        method: "GET",
+        headers: headers,
+        credentials: "include",
+    };
+    const responseObject = await fetch(url, options);
+    if (responseObject.ok) {
+        const data = await responseObject.json();
+
+        return {
+            status: responseObject.status,
+            body: data,
+        };
+    }
+    return { status: responseObject.status, body: null };
+};
+export const makeClientGetAllPrivateFormTemplatesByAuthorizedUserIdRequest =
+    async (userId) => {
+        const url =
+            process.env.NEXT_PUBLIC_DOTNET_BACKEND_API_BASE_URL +
+            "/api/form/private/" +
+            userId;
+        const headers = {
+            "Content-Type": "application/json",
+        };
+        const options = {
+            method: "GET",
+            headers: headers,
+            credentials: "include",
+        };
+        const responseObject = await fetch(url, options);
+        if (responseObject.ok) {
+            const data = await responseObject.json();
+
+            return {
+                status: responseObject.status,
+                body: data,
+            };
+        }
+        return { status: responseObject.status, body: null };
+    };
+
+export const makeClientGetBlockResponseAnalyticsRequest = async (
+    formId,
+    blockId
+) => {
+    const url =
+        process.env.NEXT_PUBLIC_DOTNET_BACKEND_API_BASE_URL +
+        "/api/formresponse/formresponseanalytics/" +
+        `${formId}/${blockId}`;
+    const headers = {
+        "Content-Type": "application/json",
+    };
+    const options = {
+        method: "GET",
+        headers: headers,
+        credentials: "include",
+    };
+    const responseObject = await fetch(url, options);
+    if (responseObject.ok) {
+        const data = await responseObject.json();
+
+        return {
+            status: responseObject.status,
+            body: data,
+        };
+    }
+    return { status: responseObject.status, body: null };
+};
+
+export const makeClientGetAllFormResponseInfosByFormTemplateId = async (
+    formId
+) => {
+    const url =
+        process.env.NEXT_PUBLIC_DOTNET_BACKEND_API_BASE_URL +
+        `/api/formresponse/allftresponseindexes/${formId}`;
+    const headers = {
+        "Content-Type": "application/json",
+    };
+    const options = {
+        method: "GET",
+        headers: headers,
+        credentials: "include",
+    };
+    const responseObject = await fetch(url, options);
+    if (responseObject.ok) {
+        const data = await responseObject.json();
+
+        return {
+            status: responseObject.status,
+            body: data,
+        };
+    }
+    return { status: responseObject.status, body: null };
+};
+
+export const makeClientGetUserInfoByIdRequest = async (userId) => {
+    const url =
+        process.env.NEXT_PUBLIC_DOTNET_BACKEND_API_BASE_URL +
+        "/api/user/useridx/" +
+        userId;
+    const headers = {
+        "Content-Type": "application/json",
+    };
+    const options = {
+        method: "GET",
+        headers: headers,
+        credentials: "include",
+    };
+    const responseObject = await fetch(url, options);
+    if (responseObject.ok) {
+        const data = await responseObject.json();
+        return { status: responseObject.status, body: data };
+    }
+    return { status: responseObject.status, body: [] };
+};
+
 export const makeClientGetFormsBySearchTerm = async (searchTerm) => {
     const url =
         process.env.NEXT_PUBLIC_DOTNET_SEARCH_API_BASE_URL +

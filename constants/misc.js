@@ -31,4 +31,4 @@ export const mapInputType = {
 };
 
 // prettier-ignore
-export const formStyle = "w-full px-5 sm:px-10 md:px-36 lg:px-64 xl:px-96 mt-12";
+export const formStyle = "px-5 sm:px-10 md:px-36 lg:px-64 xl:px-96 mt-12";

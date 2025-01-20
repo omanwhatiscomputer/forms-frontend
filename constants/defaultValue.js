@@ -82,6 +82,7 @@ export const defaultValue = {
         BannerUrl: "https://fakeimg.pl/600x400/f0cece/909090?font=lobster",
         AccessControl: "Private",
         Blocks: [block],
+        CreatedAt: null,
         mode: mode,
     }),
     newBlockResponse: (

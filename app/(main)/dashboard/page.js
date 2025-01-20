@@ -44,7 +44,12 @@ const Dashboard = () => {
                             className="flex w-full justify-between border-b-[1px] border-foreground border-dotted"
                         >
                             <div className="ml-4 " key={f.formTemplateId}>
-                                <span className="font-bold">{f.title}</span>
+                                <Link
+                                    href={`/formdet/${f.formTemplateId}/details`}
+                                    className="text-sky-400 hover:text-primary"
+                                >
+                                    {f.title}
+                                </Link>
                                 <br />
                                 {f.description}
                             </div>
