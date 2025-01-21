@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 "use client";
 import { selectAuthorId } from "@/lib/features/form/formSlice";
-import { selectUserId } from "@/lib/features/general/authSlice";
+import { selectUserId, selectUserType } from "@/lib/features/general/authSlice";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSelector } from "react-redux";
@@ -11,11 +11,13 @@ const SubNavBar = ({ formId }) => {
     const pathname = usePathname();
     const authorId = useSelector((state) => selectAuthorId(state, formId));
     const userId = useSelector((state) => selectUserId(state));
+    const userType = useSelector((state) => selectUserType(state));
     const styles = `hover:underline hover:text-red-800`;
     return (
         <div className="flex items-center justify-center">
             <div className="flex justify-between items-center w-[240px]">
-                {authorId && authorId === userId && (
+                {((authorId && authorId === userId) ||
+                    (userType && userType === "Admin")) && (
                     <>
                         <div>
                             <Link
