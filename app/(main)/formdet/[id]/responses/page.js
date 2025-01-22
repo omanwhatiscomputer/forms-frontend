@@ -111,7 +111,7 @@ const Responses = () => {
                     </Table>
                 </div>
             ) : (
-                <p>No responses recorded!</p>
+                <p>No response recorded!</p>
             )}
         </main>
     );
