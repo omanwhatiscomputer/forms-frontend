@@ -56,9 +56,6 @@ const Responses = () => {
         <main className="main">
             <SubNavBar formId={id} />
 
-            {responses && responses.length > 0 && (
-                <div>{JSON.stringify(responses)}</div>
-            )}
             {responses && responses.length > 0 ? (
                 <div className="overflow-x-auto">
                     <Table hoverable>
